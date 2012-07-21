@@ -1,0 +1,229 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
+#container{
+  padding: 5px;
+  background-color: #DADADA;
+  height: 100%;
+}
+
+.box{
+  width: 180px;
+  height: 180px;
+  margin: 5px;
+  float: left;
+  overflow: hidden;
+  background-color: #366488;
+  color: white;
+}
+
+.box_header{
+  height: 20px;
+  margin: 0px;
+  background-color: #2E5675;
+  padding: 4px 10px;
+}
+
+.box_content{
+  padding: 10px;
+  width: 160px;
+  height: 132px;
+}
+
+.large{
+  width: 370px;
+  height: 370px;
+}
+
+h2.number{
+  font-family: 'PT Sans', 'sans serif';
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: normal;
+  margin: 0px;
+  display: inline;
+}
+
+.skills{
+  visibility: hidden;
+  float: right;
+  font-family: 'PT Sans', sans serif;
+  font-size: 12px;
+}
+
+h1.name{
+  font-size: 20px;
+  font-family: 'Gentium Book Basic', serif;
+  font-weight: normal;
+  margin: 0 0 8px 0;
+}
+
+h3.professors{
+  visibility: hidden;
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: 'Gentium Book Basic', serif;
+  margin: 0 0 10px 0;
+  height: 14px;
+  overflow: hidden;
+}
+
+p.desc{
+  visibility: hidden;
+  font-size: 14px;
+  font-family: 'PT Sans', sans serif;
+  line-height: 1.3em;
+  height: 200px;
+  width: 100%;
+  overflow: auto;
+}
+
+.box_buttons{
+  height: 50px;
+  width: 370px;
+}
+
+a.box_button{
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 5px;
+  width: 175px;
+  height: 40px;
+  background-color: #89A0B3;
+  color: #ffffff;
+  font-family: 'PT Sans', sans serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.3em;
+}
+
+a.box_button.left{
+  border-right: solid thin #294F6D;
+  width: 174px;
+}
+
+a.box_button .target_service{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+a.box_button:hover{
+  background-color: #366488;
+}
+
+.large .box_content{
+  width: 350px;
+  height: 272px;
+}
+
+.large h3.professors, .large p.desc, .large .box_buttons, .large .skills{
+  visibility: visible;
+}
+
+
+/**** Isotope Filtering ****/
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.3s;
+     -moz-transition-duration: 0.3s;
+      -ms-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:         top, left, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}
+

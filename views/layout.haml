@@ -1,0 +1,12 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :type => "text/css", :href => "layout.css"}
+    %script{:type =>"text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
+    %script{:type =>"text/javascript", :src => "jquery.isotope.min.js"}
+    %script{:type =>"text/javascript", :src => "main.js"}
+    %script{:type =>"text/javascript", :src => "jquery.hoverIntent.minified.js"}
+    %script{:type =>"text/javascript", :src => "mustache.js"}
+    %link{:href => 'http://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,700|Gentium+Book+Basic:400,700|PT+Sans:400', :rel => 'stylesheet', :type =>'text/css'}
+    %title Hello
+  %body
+    =yield
