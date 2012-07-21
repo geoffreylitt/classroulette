@@ -2,6 +2,7 @@
     var $container = $('#container');
     var $last_opened = $('');
     var template;
+    var $newItems = $('');
 
     $container.isotope({
       // options
@@ -23,27 +24,33 @@
         name: course["name"],
         professors: course["professors"].split(",").join(", ").truncate(50, true),
         desc: course["desc"],
-        skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" ")
+        skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" "),
+        hours: course["hours"].split(",").join(", ")
       }
 
       var output = Mustache.render(course_template, course_data);
-      var $newItems = $(output);
+      if (index == 0){
+        output = $(output).addClass("large");
+        $last_opened = output
+      }
+      $newItems = $newItems.add(output);
 
-      $container.isotope( 'insert', $newItems );
-      $container.find('.box').hover(
-        function(){
-          $(this).css("background-color", "#294F6D");
-        },
-        function(){
-          $(this).css("background-color", "#366488");
-        }
-      );
     })
+
+    $container.isotope( 'insert', $newItems );
+    $container.find('.box').hover(
+      function(){
+        $(this).css("background-color", "#294F6D");
+      },
+      function(){
+        $(this).css("background-color", "#366488");
+      }
+    );
  });
 
   $container.delegate( '.box', 'click', function(){
     $(this).toggleClass('large');
-    $last_opened.removeClass('large');
+    $last_opened.toggleClass('large');
     $last_opened = $(this);
     $container.isotope('reLayout');
   });

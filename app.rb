@@ -24,7 +24,7 @@ get '/' do
 end
 
 get '/courses' do
-  @courses = Course.all.sample(30)
+  @courses = Course.all.sample(100)
   content_type :json
   @courses.to_json
 end

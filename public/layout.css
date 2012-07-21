@@ -116,9 +116,18 @@ h3.professors{
   font-size: 14px;
   font-weight: normal;
   font-family: 'Gentium Book Basic', serif;
-  margin: 0 0 10px 0;
-  height: 14px;
+  margin: 0;
+  height: 16px;
   overflow: hidden;
+}
+
+.hours{
+  visibility: hidden;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  height: 16px;
+  overflow:hidden;
 }
 
 p.desc{
@@ -126,7 +135,7 @@ p.desc{
   font-size: 14px;
   font-family: 'PT Sans', sans serif;
   line-height: 1.3em;
-  height: 200px;
+  height: 180px;
   width: 100%;
   overflow: auto;
 }
@@ -143,7 +152,7 @@ a.box_button{
   padding: 5px;
   width: 175px;
   height: 40px;
-  background-color: #89A0B3;
+  background-color: #6185A3;
   color: #ffffff;
   font-family: 'PT Sans', sans serif;
   font-size: 12px;
@@ -172,7 +181,7 @@ a.box_button:hover{
   height: 272px;
 }
 
-.large h3.professors, .large p.desc, .large .box_buttons, .large .skills{
+.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours{
   visibility: visible;
 }
 
