@@ -4,7 +4,6 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'thin'
 gem 'rake'
-gem 'curb-openuri'
 
 gem 'activerecord'
 gem 'sinatra-activerecord'

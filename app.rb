@@ -24,7 +24,7 @@ get '/' do
 end
 
 get '/courses' do
-  @courses = Course.all.sample(100)
+  @courses = Course.all.sample(params[:n].to_i)
   content_type :json
-  @courses.to_json
+  @courses.to_json(:methods => :colors)
 end

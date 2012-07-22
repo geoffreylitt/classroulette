@@ -1,5 +1,5 @@
 <script id="course_template" type="text/html">
-  <div class='box'>
+  <div class='box' data-color-primary='{{color1}}' data-color-secondary='{{color2}}' style='background-color: {{color1}};'>
     <div class='box_header'>
       <h2 class='number'>{{number}}</h2>
       <div class='skills'>{{skills}}</div>
@@ -7,7 +7,7 @@
     <div class='box_content'>
       <h1 class='name'>{{name}}</h1>
       <h3 class='professors hidden'>{{professors}}</h3>
-      <div class='hours'>{{hours}}</div>
+      <div class='hours'>{{hours}}</div><div title='No regular final exam scheduled! :)' class='{{no_exam}}'></div><div title='Meets during reading period :(' class='{{reading_period}}'></div>
       <p class='desc hidden'>{{desc}}</p>
     </div>
     <div class='box_buttons hidden'>

@@ -51,22 +51,44 @@ table {
 body{
   margin: 0;
   padding: 0;
+  background-color: #1B1B1B;
+}
+
+#top-bar{
+  position: fixed;
+  height: 45px;
+  width: 100%;
+  padding: 5px 0;
+  z-index: 100;
+  background-color: #1B1B1B;
+}
+
+img.logo{
+  margin: 5px 0 0 15px;
 }
 
 #container{
-  padding: 5px;
-  background-color: #DADADA;
+  padding: 55px 5px 5px 5px;
   height: 100%;
 }
 
 .box{
-  width: 180px;
-  height: 180px;
+  width: 178px;
+  height: 178px;
   margin: 5px;
   float: left;
   overflow: hidden;
   background-color: #366488;
   color: white;
+
+  -moz-border-radius-topright: 20px;
+  -moz-border-radius-bottomright: 20px;
+  -moz-border-radius-bottomleft: 20px;
+
+  -webkit-border-top-right-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+
 }
 
 .box_header{
@@ -74,17 +96,26 @@ body{
   margin: 0px;
   background-color: #2E5675;
   padding: 4px 10px;
+
+  -moz-border-radius-topright: 20px;
+  -webkit-border-top-right-radius: 20px;
 }
 
 .box_content{
   padding: 10px;
   width: 160px;
   height: 132px;
+
+  -moz-border-radius-bottomleft: 20px;
+  -moz-border-radius-bottomright: 20px;
+
+  -webkit-border-bottom-left-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
 }
 
 .large{
-  width: 370px;
-  height: 370px;
+  width: 368px;
+  height: 368px;
 }
 
 h2.number{
@@ -128,6 +159,25 @@ h3.professors{
   margin: 0 0 10px 0;
   height: 16px;
   overflow:hidden;
+  float: left;
+}
+
+.no_exam{
+  visibility: hidden;
+  float: left;
+  margin: 2px 0 0 6px;
+  height: 10px;
+  width: 18px;
+  background-image: url('images/no-exam.png');
+}
+
+.reading_period{
+  visibility: hidden;
+  float: left;
+  margin: 2px 0 0 6px;
+  height: 10px;
+  width: 18px;
+  background-image: url('images/reading-period.png');
 }
 
 p.desc{
@@ -151,7 +201,7 @@ a.box_button{
   margin: 0;
   padding: 5px;
   width: 175px;
-  height: 40px;
+  height: 39px;
   background-color: #6185A3;
   color: #ffffff;
   font-family: 'PT Sans', sans serif;
@@ -160,11 +210,19 @@ a.box_button{
   text-align: center;
   text-decoration: none;
   line-height: 1.3em;
+  border-top: solid thin #294F6D;
 }
 
 a.box_button.left{
   border-right: solid thin #294F6D;
-  width: 174px;
+  width: 172px;
+  -moz-border-radius-bottomleft: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+}
+
+a.box_button.right{
+  -moz-border-radius-bottomright: 20px;
+  -webkit-border-bottom-right-radius: 20px;
 }
 
 a.box_button .target_service{
@@ -181,9 +239,11 @@ a.box_button:hover{
   height: 272px;
 }
 
-.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours{
+.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours, .large .no_exam, .large .reading_period{
   visibility: visible;
 }
+
+
 
 
 /**** Isotope Filtering ****/
