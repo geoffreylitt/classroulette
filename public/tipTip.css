@@ -25,10 +25,11 @@
 }
 
 #tiptip_content {
+	font-family: 'PT Sans', sans serif;
 	font-size: 14px;
 	color: #fff;
 	text-shadow: 0 0 2px #000;
-	padding: 4px 8px;
+	padding: 6px 12px;
 	border: 1px solid rgba(255,255,255,0.25);
 	background-color: rgb(25,25,25);
 	background-color: rgba(25,25,25,0.92);
@@ -101,7 +102,7 @@
 /* Webkit Hacks  */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	#tiptip_content {
-		padding: 4px 8px 5px 8px;
+		padding: 6px 12px 7px 12px;
 		background-color: rgba(45,45,45,0.88);
 	}
 	#tiptip_holder.tip_bottom #tiptip_arrow_inner {

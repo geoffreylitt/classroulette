@@ -63,13 +63,16 @@ body{
   background-color: #1B1B1B;
 }
 
-img.logo{
-  margin: 5px 0 0 15px;
+a.logo{
+  display: block;
+  margin: 5px auto 0 auto;
+  width: 300px;
 }
 
 #container{
   padding: 55px 5px 5px 5px;
   height: 100%;
+  margin: 0 auto 0 auto;
 }
 
 .box{
@@ -119,12 +122,22 @@ img.logo{
 }
 
 h2.number{
+  float: left;
   font-family: 'PT Sans', 'sans serif';
   font-size: 16px;
   text-transform: uppercase;
   font-weight: normal;
   margin: 0px;
   display: inline;
+}
+
+.permission_required{
+  visibility: hidden;
+  float: left;
+  margin: 2px 0 0 5px;
+  height: 12px;
+  width: 12px;
+  background-image: url('images/lock.png');
 }
 
 .skills{
@@ -239,7 +252,7 @@ a.box_button:hover{
   height: 272px;
 }
 
-.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours, .large .no_exam, .large .reading_period{
+.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours, .large .no_exam, .large .reading_period, .large .permission_required{
   visibility: visible;
 }
 

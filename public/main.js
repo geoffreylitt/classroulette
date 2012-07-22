@@ -1,6 +1,11 @@
  $(document).ready(function() {
   var $container = $('#container');
 
+  var body_width = $('body').width();
+  body_width = body_width - 15;
+  var container_width = body_width - (body_width % 188) + 15;
+  $container.width(container_width);
+
   $container.isotope({
     // options
     itemSelector : '.box',
@@ -13,7 +18,16 @@
 
   $('a.logo').click(function(){
     load_courses();
-    return false;
+  });
+
+  $('a.logo').css('margin-left', $container.width()/2 -80);
+  $('a.logo').css('margin-right', 0);
+
+  $('body').keyup(function(e){
+   if(e.keyCode == 13){
+      //pressed space
+      load_courses();
+   }
   });
 
 });
@@ -40,7 +54,7 @@ function load_courses(){
   });
 
   var row_number = Math.floor(($container.width() - 15)/183);
-  var number = row_number * 6 - 3;
+  var number = row_number * 4 - 3;
 
   $.getJSON('/courses?n=' + number, function(data) {
     $.each(data, function(index, course_obj) {
@@ -55,7 +69,8 @@ function load_courses(){
         color1: course["colors"][0],
         color2: course["colors"][1],
         no_exam: course["no_exam"] ? 'no_exam' : '',
-        reading_period: course["reading_period"] ? 'reading_period' : ''
+        reading_period: course["reading_period"] ? 'reading_period' : '',
+        permission_required: course["permission_required"] ? "permission_required" : ''
       }
 
       var output = Mustache.render(course_template, course_data);
@@ -64,8 +79,8 @@ function load_courses(){
       }
       $newItems = $newItems.add(output);
     })
-
     $container.isotope( 'insert', $newItems );
+    $last_opened = $('.large');
     $container.find('.box').hover(
       function(){
         $(this).css("background-color", $(this).data('color-secondary'));
@@ -75,15 +90,14 @@ function load_courses(){
       }
     );
 
-    $(".no_exam, .reading_period").tipTip({delay: 100});
+    $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
   });
 
   $container.delegate( '.box', 'click', function(){
-    if ($(this).hasClass('large') == false){
-      $('#container .box.large').removeClass('large');
-      $(this).addClass('large');
-    }
+    $last_opened.removeClass('large');
+    $(this).addClass('large');
     $container.isotope('reLayout');
+    $last_opened = $(this);
   });
 }
