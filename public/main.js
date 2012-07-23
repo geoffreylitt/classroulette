@@ -35,6 +35,14 @@
    }
   });
 
+  $container.delegate( '.box', 'click', function(){
+    if (!$(this).hasClass('large')){
+      $('.large').removeClass('large');
+      $(this).addClass('large');
+      $container.isotope('reLayout');
+    }
+  });
+
 });
 
 String.prototype.truncate =
@@ -50,7 +58,7 @@ function load_courses(){
   var $container = $('#container');
   var $newItems = $('');
   var $oldItems = $('.box');
-  var $last_opened = $('');
+  var number_of_rows = 4;
 
   if($('#final_message').is(':visible')){
     $('#final_message').hide();
@@ -92,7 +100,7 @@ function load_courses(){
   });
 
   var row_number = Math.floor(($container.width() - 15)/183);
-  var number = row_number * 4 - 3;
+  var number = row_number * number_of_rows - 3;
 
   $.getJSON('/courses?n=' + number, function(data) {
     $.each(data, function(index, course_obj) {
@@ -122,7 +130,6 @@ function load_courses(){
     spinner.stop();
 
     $container.isotope( 'insert', $newItems );
-    $last_opened = $('.large');
 
     $container.find('.box').hover(
       function(){
@@ -142,12 +149,6 @@ function load_courses(){
 
   });
 
-  $container.delegate( '.box', 'click', function(){
-    $last_opened.removeClass('large');
-    $(this).addClass('large');
-    $container.isotope('reLayout');
-    $last_opened = $(this);
-  });
 }
 
 function showAbout(){
