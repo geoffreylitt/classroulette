@@ -43,6 +43,17 @@
     }
   });
 
+  $(window).smartresize(function(){
+    $('a.logo').css('margin-left', $(window).width()/2 -98);
+
+    $container = $('#container');
+    var body_width = $('body').width();
+    body_width = body_width - 15;
+    var container_width = body_width - (body_width % 188) + 15;
+    $container.width(container_width);
+    $container.isotope('reLayout');
+  });
+
 });
 
 String.prototype.truncate =
@@ -99,7 +110,7 @@ function load_courses(){
   });
 
   var row_number = Math.floor(($container.width() - 15)/183);
-  var number_of_rows = Math.floor(($(window).height() - 100)/183);
+  var number_of_rows = Math.floor(($(window).height() - 65)/183);
   var number = row_number * number_of_rows - 3;
 
   $.getJSON('/courses?n=' + number, function(data) {
