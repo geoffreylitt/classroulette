@@ -20,11 +20,12 @@ set :database, 'sqlite://development.db'
 set :static, true
 
 get '/' do
-  haml :courses
+  erb :index
 end
 
 get '/courses' do
-  @courses = Course.all.sample(params[:n].to_i)
+  number = [params[:n].to_i, 100].min
+  @courses = Course.all.sample(number)
   content_type :json
   @courses.to_json(:methods => :colors)
 end

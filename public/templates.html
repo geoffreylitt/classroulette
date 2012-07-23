@@ -7,15 +7,17 @@
     </div>
     <div class='box_content'>
       <h1 class='name'>{{name}}</h1>
-      <h3 class='professors hidden'>{{professors}}</h3>
-      <div class='hours'>{{hours}}</div>
-      <div title='No regular final exam scheduled! :)' class='{{no_exam}}'></div>
-      <div title='Meets during reading period :(' class='{{reading_period}}'></div>
-      <p class='desc hidden'>{{desc}}</p>
+      <div class='course_details'>
+        <h3 class='professors'>{{professors}}</h3>
+        <div class='hours'>{{hours}}</div>
+        <div title='No regular final exam scheduled! :)' class='{{no_exam}}'></div>
+        <div title='Meets during reading period :(' class='{{reading_period}}'></div>
+        <p class='desc hidden'>{{desc}}</p>
+      </div>
     </div>
-    <div class='box_buttons hidden'>
-      <a target="_blank" href="http://google.com" class="box_button left">View on<br><span class='target_service'>Yale Bluebook</span></a>
-      <a target="_blank" href="http://google.com" class="box_button right">View on<br><span class='target_service'>Yale OCI</span></a>
+    <div class='box_buttons'>
+      <!--TODO <a target="_blank" href="#" class="box_button left ybb">View on<br><span class='target_service'>Yale Bluebook</span></a> -->
+      <a target="_blank" href="#" class="box_button right oci" data-oci-id='{{oci_id}}'>View on<br><span class='target_service'>Yale OCI</span></a>
     </div>
   </div>
 </script>

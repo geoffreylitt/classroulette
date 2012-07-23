@@ -11,22 +11,27 @@
     itemSelector : '.box',
     masonry : {
       columnWidth : 1
-    }
+    },
+    animationEngine: 'best-available',
+    animationOptions: {
+     duration: 400,
+     easing: 'swing',
+     queue: false
+   }
   });
-
-  load_courses();
 
   $('a.logo').click(function(){
     load_courses();
   });
 
-  $('a.logo').css('margin-left', $container.width()/2 -80);
+  $('a.logo').css('margin-left', $(window).width()/2 -98);
   $('a.logo').css('margin-right', 0);
 
-  $('body').keyup(function(e){
-   if(e.keyCode == 13){
+  $('body').keydown(function(e){
+   if(e.keyCode == 32){
       //pressed space
       load_courses();
+      return false;
    }
   });
 
@@ -47,7 +52,40 @@ function load_courses(){
   var $oldItems = $('.box');
   var $last_opened = $('');
 
+  if($('#final_message').is(':visible')){
+    $('#final_message').hide();
+  }
+
+  if($('#second_message').is(':visible')){
+    $('#second_message').hide();
+    $('#final_message').show();
+  }
+
+  if($('#welcome_message').is(':visible')){
+    $('#welcome_message').hide();
+    $('#second_message').show();
+  }
+
   $container.isotope('remove', $oldItems);
+
+  var opts = {
+  lines: 13, // The number of lines to draw
+  length: 17, // The length of each line
+  width: 6, // The line thickness
+  radius: 18, // The radius of the inner circle
+  rotate: 0, // The rotation offset
+  color: '#ffffff', // #rgb or #rrggbb
+  speed: 2.2, // Rounds per second
+  trail: 60, // Afterglow percentage
+  shadow: false, // Whether to render a shadow
+  hwaccel: true, // Whether to use hardware acceleration
+  className: 'spinner', // The CSS class to assign to the spinner
+  zIndex: 2e9, // The z-index (defaults to 2000000000)
+  top: 'auto', // Top position relative to parent in px
+  left: 'auto' // Left position relative to parent in px
+  };
+
+  var spinner = new Spinner(opts).spin(document.body);
 
   $.get('templates.html', function(templates) {
     course_template = $(templates).filter('#course_template').html();
@@ -60,6 +98,7 @@ function load_courses(){
     $.each(data, function(index, course_obj) {
       var course = course_obj["course"];
       var course_data = {
+        oci_id: course["oci_id"],
         number: course["department"] + " " + course["number"],
         name: course["name"],
         professors: course["professors"].split(",").join(", ").truncate(50, true),
@@ -79,8 +118,12 @@ function load_courses(){
       }
       $newItems = $newItems.add(output);
     })
+
+    spinner.stop();
+
     $container.isotope( 'insert', $newItems );
     $last_opened = $('.large');
+
     $container.find('.box').hover(
       function(){
         $(this).css("background-color", $(this).data('color-secondary'));
@@ -92,6 +135,10 @@ function load_courses(){
 
     $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
+    $('a.oci').click(function(){
+      window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400,top=50,left=50');
+      return false;
+    })
   });
 
   $container.delegate( '.box', 'click', function(){
@@ -100,4 +147,14 @@ function load_courses(){
     $container.isotope('reLayout');
     $last_opened = $(this);
   });
+}
+
+function showAbout(){
+  $('#about').show();
+  return false;
+}
+
+function hideAbout(){
+  $('#about').hide();
+  return false;
 }

@@ -46,12 +46,22 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a:active
+{
+outline: none;
+}
+a:focus
+{
+-moz-outline-style: none;
+}
 
 
 body{
   margin: 0;
   padding: 0;
   background-color: #1B1B1B;
+  height: 100%;
+  font-family: 'PT Sans', sans serif;
 }
 
 #top-bar{
@@ -66,7 +76,18 @@ body{
 a.logo{
   display: block;
   margin: 5px auto 0 auto;
-  width: 300px;
+  height: 30px;
+  width: 196px;
+  background-image: url('images/logo-sprite.png');
+}
+
+a.logo:hover{
+  background-position: 0px -32px;
+}
+
+a.logo:active{
+  background-position: 0px -32px;
+  margin-top: 6px;
 }
 
 #container{
@@ -74,6 +95,105 @@ a.logo{
   height: 100%;
   margin: 0 auto 0 auto;
 }
+
+#welcome_message{
+  width: 100%;
+  font-size: 30px;
+  color: #dddddd;
+  font-family: 'PT Sans', sans serif;
+  text-align: center;
+  margin-top: 200px;
+}
+
+.spacebar{
+  border: solid thin #dddddd;
+  padding: 5px 30px;
+  margin: 0 5px;
+  font-size: 20px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; /* future proofing */
+}
+
+#second_message, #final_message{
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 25px;
+  font-size: 15px;
+  font-family: 'PT Sans', sans serif;
+  color: #dddddd;
+  z-index: 100;
+  width: 500px;
+}
+
+#links{
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 100;
+}
+
+a#about-link{
+  font-family: 'PT Sans', sans serif;
+  font-size: 14 px;
+  color: #dddddd;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+#about{
+  display: none;
+}
+
+.modal_background{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  background-color: rgba(27, 27, 27, 0.8);
+  z-index: 1000;
+}
+
+.modal_content{
+  position: relative;
+  width: 400px;
+  padding: 20px;
+  margin: 150px auto 0 auto;
+  background-color: #dddddd;
+}
+
+.modal_content h2{
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'PT Sans', sans serif;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.modal_content p{
+  font-size: 16px;
+  font-family: 'PT Sans', sans serif;
+  line-height: 1.2em;
+  margin-bottom: 1em;
+}
+
+.modal_content .close_link{
+  position: absolute;
+  top: 8px;
+  right: 12px;
+}
+
+.modal_content .close_link a{
+  color: #1B1B1B;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+/*-----Course box styling--------*/
 
 .box{
   width: 178px;
@@ -132,7 +252,7 @@ h2.number{
 }
 
 .permission_required{
-  visibility: hidden;
+  display: none;
   float: left;
   margin: 2px 0 0 5px;
   height: 12px;
@@ -141,10 +261,14 @@ h2.number{
 }
 
 .skills{
-  visibility: hidden;
+  display: none;
   float: right;
   font-family: 'PT Sans', sans serif;
   font-size: 12px;
+}
+
+.large .skills, .large .permission_required{
+  display: block;
 }
 
 h1.name{
@@ -155,7 +279,6 @@ h1.name{
 }
 
 h3.professors{
-  visibility: hidden;
   display: block;
   font-size: 14px;
   font-weight: normal;
@@ -166,7 +289,6 @@ h3.professors{
 }
 
 .hours{
-  visibility: hidden;
   font-family: 'Gentium Book Basic', serif;
   font-size: 14px;
   margin: 0 0 10px 0;
@@ -176,7 +298,6 @@ h3.professors{
 }
 
 .no_exam{
-  visibility: hidden;
   float: left;
   margin: 2px 0 0 6px;
   height: 10px;
@@ -185,7 +306,6 @@ h3.professors{
 }
 
 .reading_period{
-  visibility: hidden;
   float: left;
   margin: 2px 0 0 6px;
   height: 10px;
@@ -194,7 +314,6 @@ h3.professors{
 }
 
 p.desc{
-  visibility: hidden;
   font-size: 14px;
   font-family: 'PT Sans', sans serif;
   line-height: 1.3em;
@@ -204,10 +323,16 @@ p.desc{
 }
 
 .box_buttons{
+  display: none;
   height: 50px;
   width: 370px;
 }
 
+.large .box_buttons{
+  display: block;
+}
+
+/* Use this after YBB button is added
 a.box_button{
   display: block;
   float: left;
@@ -238,6 +363,31 @@ a.box_button.right{
   -webkit-border-bottom-right-radius: 20px;
 }
 
+*/
+
+a.box_button{
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 5px;
+  width: 358px;
+  height: 39px;
+  background-color: #6185A3;
+  color: #ffffff;
+  font-family: 'PT Sans', sans serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.3em;
+  border-top: solid thin #294F6D;
+
+  -moz-border-radius-bottomleft: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  -moz-border-radius-bottomright: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+}
+
 a.box_button .target_service{
   font-size: 15px;
   font-weight: bold;
@@ -252,10 +402,13 @@ a.box_button:hover{
   height: 272px;
 }
 
-.large h3.professors, .large p.desc, .large .box_buttons, .large .skills, .large .hours, .large .no_exam, .large .reading_period, .large .permission_required{
-  visibility: visible;
+.course_details{
+  display: none;
 }
 
+.large .course_details{
+  display: block;
+}
 
 
 
@@ -274,11 +427,11 @@ a.box_button:hover{
 
 .isotope,
 .isotope .isotope-item {
-  -webkit-transition-duration: 0.3s;
-     -moz-transition-duration: 0.3s;
-      -ms-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
+  -webkit-transition-duration: 0.4s;
+     -moz-transition-duration: 0.4s;
+      -ms-transition-duration: 0.4s;
+       -o-transition-duration: 0.4s;
+          transition-duration: 0.4s;
 }
 
 .isotope {
