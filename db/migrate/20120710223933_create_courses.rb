@@ -11,6 +11,9 @@ class CreateCourses < ActiveRecord::Migration
       t.string :skills
       t.string :areas
       t.text :desc
+      t.boolean :permission_required
+      t.boolean :no_exam
+      t.boolean :reading_period
 
       t.timestamps
     end

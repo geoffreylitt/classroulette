@@ -49,7 +49,7 @@ class Scrape
 
           page.css('td:nth-child(2) tr').each do |row|
             row = row.text
-            
+
             if row.include? 'Skills'
               if row.upcase.include? 'WR'
                 skills << 'WR'
@@ -95,6 +95,24 @@ class Scrape
             end
           end
 
+          if notices_array.include? 'Permission of instructor required'
+            permission_required = true
+          else
+            permission_required = false
+          end
+
+          if notices_array.include? 'No regular final examination'
+            no_exam = true
+          else
+            no_exam = false
+          end
+
+          if notices_array.include? "Meets during reading period"
+            reading_period = true
+          else
+            reading_period = false
+          end
+
           skills_string = skills.join(',')
           areas_string = areas.join(',')
           notices = notices_array.join(',')
@@ -120,14 +138,17 @@ class Scrape
             :notices => notices,
             :skills => skills_string,
             :areas => areas_string,
-            :desc => description
+            :desc => description,
+            :permission_required => permission_required,
+            :no_exam => no_exam,
+            :reading_period => reading_period
           )
 
           log.info "Saved #{course_id} (#{department} #{number})"
         rescue
           log.error "Couldn't save #{course_id}"
           next
-        end        
+        end
       end
     end
   end
