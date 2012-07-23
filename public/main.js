@@ -133,12 +133,13 @@ function load_courses(){
       }
     );
 
-    $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
-
     $('a.oci').click(function(){
       window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400,top=50,left=50');
       return false;
     })
+
+    $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
+
   });
 
   $container.delegate( '.box', 'click', function(){
