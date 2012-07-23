@@ -8,9 +8,6 @@ configure :development do
   require 'sinatra/reloader'
 end
 
-require './course'
-require './scrape'
-
 env = ENV["RACK_ENV"] || 'development'
 
 if env == 'development'
@@ -32,6 +29,9 @@ else
     :encoding => 'utf8'
   )
 end
+
+require './course'
+require './scrape'
 
 set :static, true
 
