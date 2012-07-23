@@ -212,6 +212,8 @@ a#about-link{
   -webkit-border-bottom-right-radius: 20px;
   -webkit-border-bottom-left-radius: 20px;
 
+  -webkit-transform: translateZ(0); /*may provide performance boost for animations*/
+
 }
 
 .box_header{
