@@ -124,8 +124,8 @@ function load_courses(){
         desc: course["desc"],
         skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" "),
         hours: course["hours"].split(",").join(", "),
-        color1: course["colors"][0],
-        color2: course["colors"][1],
+        color1: courseColor(course["category"])[0],
+        color2: courseColor(course["category"])[1],
         no_exam: course["no_exam"] ? 'no_exam' : '',
         reading_period: course["reading_period"] ? 'reading_period' : '',
         permission_required: course["permission_required"] ? "permission_required" : ''
@@ -160,6 +160,34 @@ function load_courses(){
 
   });
 
+}
+
+function courseColor(category){
+  var colors = [];
+  switch(category){
+    case 'arts':
+      colors = ['#2D9C90', '#238A7F'];
+      break;
+    case 'lang':
+      colors = ['#883636', '#772B2B'];
+      break;
+    case 'sosc':
+      colors = ['#BB7A1E', '#AD6700'];
+      break;
+    case 'hums':
+      colors = ['#366488', '#294F6D'];
+      break;
+    case 'sci':
+      colors = ['#368836', '#297C29'];
+      break;
+    case 'other':
+      colors = ['#883636', '#772B2B'];
+      break;
+    default:
+      colors = ['#883636', '#772B2B'];
+  }
+
+  return colors;
 }
 
 function showAbout(){

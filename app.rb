@@ -43,5 +43,5 @@ get '/courses' do
   number = [params[:n].to_i, 100].min
   @courses = Course.all.sample(number)
   content_type :json
-  @courses.to_json(:methods => :colors)
+  @courses.to_json(:methods => :category)
 end
