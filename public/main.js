@@ -36,9 +36,9 @@
   });
 
   $container.delegate( '.box', 'click', function(){
-    if (!$(this).hasClass('large')){
-      $('.large').removeClass('large');
-      $(this).addClass('large');
+    if ($(this).attr('id') != 'large'){
+      $('#large').attr('id', '');;
+      $(this).attr('id', 'large');
       $container.isotope('reLayout');
     }
   });
@@ -58,7 +58,6 @@ function load_courses(){
   var $container = $('#container');
   var $newItems = $('');
   var $oldItems = $('.box');
-  var number_of_rows = 4;
 
   if($('#final_message').is(':visible')){
     $('#final_message').hide();
@@ -100,6 +99,7 @@ function load_courses(){
   });
 
   var row_number = Math.floor(($container.width() - 15)/183);
+  var number_of_rows = Math.floor(($(window).height() - 100)/183);
   var number = row_number * number_of_rows - 3;
 
   $.getJSON('/courses?n=' + number, function(data) {
@@ -122,7 +122,7 @@ function load_courses(){
 
       var output = Mustache.render(course_template, course_data);
       if (index == 0){
-        output = $(output).addClass("large");
+        output = $(output).attr('id', 'large');
       }
       $newItems = $newItems.add(output);
     })
@@ -143,8 +143,8 @@ function load_courses(){
     $('a.oci').click(function(){
       window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400,top=50,left=50');
       return false;
-    })
-
+    }
+)
     $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
   });

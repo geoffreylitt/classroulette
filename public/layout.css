@@ -238,7 +238,7 @@ a#about-link{
   -webkit-border-bottom-right-radius: 20px;
 }
 
-.large{
+#large{
   width: 368px;
   height: 368px;
 }
@@ -269,7 +269,7 @@ h2.number{
   font-size: 12px;
 }
 
-.large .skills, .large .permission_required{
+#large .skills, #large .permission_required{
   display: block;
 }
 
@@ -330,7 +330,7 @@ p.desc{
   width: 370px;
 }
 
-.large .box_buttons{
+#large .box_buttons{
   display: block;
 }
 
@@ -399,7 +399,7 @@ a.box_button:hover{
   background-color: #366488;
 }
 
-.large .box_content{
+#large .box_content{
   width: 350px;
   height: 272px;
 }
@@ -408,7 +408,7 @@ a.box_button:hover{
   display: none;
 }
 
-.large .course_details{
+#large .course_details{
   display: block;
 }
 
