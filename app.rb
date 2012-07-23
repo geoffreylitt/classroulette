@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'rubygems'
 require 'nokogiri'
+require 'uri'
 
 configure :development do
   require 'sinatra/reloader'
