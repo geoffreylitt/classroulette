@@ -8,7 +8,15 @@ configure :development do
   require 'sinatra/reloader'
 end
 
+env = ENV["RACK_ENV"] || 'development'
 
+if env == 'development'
+  set :database, 'sqlite://development.db'
+  ActiveRecord::Base.establish_connection(
+    adapter: 'sqlite3',
+    database: 'development.db'
+  )
+else
   db = URI.parse(ENV['DATABASE_URL'])
 
   ActiveRecord::Base.establish_connection(
@@ -20,7 +28,7 @@ end
     :database => db.path[1..-1],
     :encoding => 'utf8'
   )
-
+end
 
 require './course'
 require './scrape'
