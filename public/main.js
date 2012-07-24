@@ -22,18 +22,21 @@
 
   $('a.logo').click(function(){
     load_courses();
+    _gaq.push(['_trackEvent', 'Load courses', 'Logo', courseNumber()]);
+    return false;
   });
-
-  $('a.logo').css('margin-left', $(window).width()/2 -98);
-  $('a.logo').css('margin-right', 0);
 
   $('body').keydown(function(e){
    if(e.keyCode == 32){
       //pressed space
       load_courses();
+      _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', courseNumber()]);
       return false;
    }
   });
+
+  $('a.logo').css('margin-left', $(window).width()/2 -98);
+  $('a.logo').css('margin-right', 0);
 
   $container.delegate( '.box', 'click', function(){
     if ($(this).attr('id') != 'large'){
@@ -110,11 +113,7 @@ function load_courses(){
     course_template = $(templates).filter('#course_template').html();
   });
 
-  var row_number = Math.floor(($container.width() - 15)/183);
-  var number_of_rows = Math.floor(($(window).height() - 65)/183);
-  var number = row_number * number_of_rows - 3;
-
-  $.getJSON('/courses?n=' + number, function(data) {
+  $.getJSON('/courses?n=' + courseNumber(), function(data) {
     $.each(data, function(index, course_obj) {
       var course = course_obj["course"];
       var course_data = {
@@ -223,4 +222,11 @@ function showAbout(){
 function hideAbout(){
   $('#about').hide();
   return false;
+}
+
+function courseNumber(){
+  var row_number = Math.floor(($container.width() - 15)/183);
+  var number_of_rows = Math.floor(($(window).height() - 65)/183);
+  var number = row_number * number_of_rows - 3;
+  return number;
 }
