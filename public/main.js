@@ -153,7 +153,7 @@ function load_courses(){
     );
 
     $('a.oci').click(function(){
-      window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400,top=50,left=50');
+      window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400');
       return false;
     }
 )
