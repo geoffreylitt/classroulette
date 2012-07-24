@@ -19,3 +19,4 @@ end
 gem 'haml'
 gem 'psych' # Provides UTF-8 output
 gem 'nokogiri'
+gem 'mechanize'

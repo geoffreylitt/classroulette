@@ -2,6 +2,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'logger'
 require 'open-uri'
+require 'mechanize'
 
 class Scrape
 
@@ -152,4 +153,30 @@ class Scrape
       end
     end
   end
+
+  def self.scrape_ybb(first, last, cas_username, cas_password)
+    #authenticate with CAS
+    agent = Mechanize.new
+    page = agent.get('http://yalebluebook.com')
+    login_form = page.form
+    login_form.username = cas_username
+    login_form.password = cas_password
+    agent.submit(login_form, login_form.buttons.first)
+
+    (first..last).each do |ybb_id|
+      json = agent.get("http://yalebluebook.com/courses/#{ybb_id}.json")
+      result = JSON.parse(json.body)
+      oci_id = result['course']['oci_id']
+
+      course = Course.find_all_by_oci_id(oci_id).first
+
+      if course
+        course.ybb_id = ybb_id
+        course.save!
+      end
+    end
+  end
+
+
+
 end

@@ -12,6 +12,12 @@
     masonry : {
       columnWidth : 1
     },
+    getSortData: {
+      number: function($box){
+        return parseInt($box.attr('id').split('-')[1]);
+      }
+    },
+    sortBy: 'number',
     animationEngine: 'best-available',
     animationOptions: {
      duration: 400,
@@ -39,9 +45,9 @@
   $('a.logo').css('margin-right', 0);
 
   $container.delegate( '.box', 'click', function(){
-    if ($(this).attr('id') != 'large'){
-      $('#large').attr('id', '');;
-      $(this).attr('id', 'large');
+    if (!$(this).hasClass('large')){
+      $('.large').removeClass('large');
+      $(this).addClass('large');
       $container.isotope('reLayout');
     }
   });
@@ -128,12 +134,14 @@ function load_courses(){
         color2: courseColor(course["category"])[1],
         no_exam: course["no_exam"] ? 'no_exam' : '',
         reading_period: course["reading_period"] ? 'reading_period' : '',
-        permission_required: course["permission_required"] ? "permission_required" : ''
+        permission_required: course["permission_required"] ? "permission_required" : '',
+        ybb_id: course["ybb_id"],
+        box_index: index
       }
 
       var output = Mustache.render(course_template, course_data);
       if (index == 0){
-        output = $(output).attr('id', 'large');
+        output = $(output).addClass('large');
       }
       $newItems = $newItems.add(output);
     })
@@ -154,8 +162,13 @@ function load_courses(){
     $('a.oci').click(function(){
       window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400');
       return false;
-    }
-)
+    });
+
+    $('a.ybb').click(function(){
+      window.open("http://yalebluebook.com/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
+      return false;
+    });
+
     $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
   });

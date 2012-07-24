@@ -1,5 +1,5 @@
 <script id="course_template" type="text/html">
-  <div class='box' data-color-primary='{{color1}}' data-color-secondary='{{color2}}' style='background-color: {{color1}};'>
+  <div class='box' id='box-{{box_index}}' data-color-primary='{{color1}}' data-color-secondary='{{color2}}' style='background-color: {{color1}};'>
     <div class='box_header'>
       <h2 class='number'>{{number}}</h2>
       <div title='Permission of the instructor required' class='{{permission_required}}'></div>
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class='box_buttons'>
-      <!--TODO <a target="_blank" href="#" class="box_button left ybb">View on<br><span class='target_service'>Yale Bluebook</span></a> -->
+      <a target="_blank" href="http://yalebluebook.com/details/{{ybb_id}}" class="box_button left ybb" data-ybb-id='{{ybb_id}}'>View on<br><span class='target_service'>Yale Bluebook</span></a>
       <a target="_blank" href="http://students.yale.edu/oci/resultDetail.jsp?course={{oci_id}}&term=201203" class="box_button right oci" data-oci-id='{{oci_id}}'>View on<br><span class='target_service'>Yale OCI</span></a>
     </div>
   </div>
