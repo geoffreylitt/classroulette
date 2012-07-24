@@ -122,7 +122,7 @@ function load_courses(){
         number: course["department"] + " " + course["number"],
         name: course["name"],
         professors: course["professors"].split(",").join(", ").truncate(50, true),
-        desc: course["desc"],
+        desc: course["desc"].split("\n").join("<br><br>"),
         skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" "),
         hours: course["hours"].split(",").join(", "),
         color1: courseColor(course["category"])[0],
