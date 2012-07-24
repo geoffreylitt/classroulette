@@ -225,6 +225,7 @@ function hideAbout(){
 }
 
 function courseNumber(){
+  $container = $("#container");
   var row_number = Math.floor(($container.width() - 15)/183);
   var number_of_rows = Math.floor(($(window).height() - 65)/183);
   var number = row_number * number_of_rows - 3;
