@@ -22,7 +22,7 @@
 
   $('a.logo').click(function(){
     load_courses();
-    _gaq.push(['_trackEvent', 'Load courses', 'Logo', courseNumber()]);
+    _gaq.push(['_trackEvent', 'Load courses', 'Logo', '', courseNumber()]);
     return false;
   });
 
@@ -30,7 +30,7 @@
    if(e.keyCode == 32){
       //pressed space
       load_courses();
-      _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', courseNumber()]);
+      _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', '', courseNumber()]);
       return false;
    }
   });
