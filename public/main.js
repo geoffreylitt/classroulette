@@ -54,6 +54,7 @@
     $container.isotope('reLayout');
   });
 
+
 });
 
 String.prototype.truncate =
@@ -192,6 +193,30 @@ function courseColor(category){
 
 function showAbout(){
   $('#about').show();
+
+  $('#about input').iToggle({
+    keepLabel: true,
+    speed: 200,
+    onClick: function(){
+      //Function here
+    },
+    onClickOn: function(){
+      //Function here
+    },
+    onClickOff: function(){
+      //Function here
+    },
+    onSlide: function(){
+      //Function here
+    },
+    onSlideOn: function(){
+      //Function here
+    },
+    onSlideOff: function(){
+      //Function here
+    }
+  });
+
   return false;
 }
 
