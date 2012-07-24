@@ -41,7 +41,7 @@ end
 
 get '/courses' do
   number = [params[:n].to_i, 100].min
-  @courses = Course.where("number < 400").sample(number)
+  @courses = Course.where("number < 400 AND department != 'DRAM'").sample(number)
   content_type :json
   @courses.to_json(:methods => :category)
 end
