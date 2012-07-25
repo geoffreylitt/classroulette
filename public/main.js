@@ -62,6 +62,12 @@ String.prototype.truncate = function (n, useWordBoundary) {
 
 //main load courses function
 function load_courses() {
+
+    //start loading animation
+    $('.wheel').addClass('wheel2');
+    $('.wheel').removeClass('hide');
+    
+    //setup template variables
     var template;
     var $container = $('#container');
     var $newItems = $('');
@@ -77,22 +83,25 @@ function load_courses() {
     $.getJSON('/courses?n=' + courseNumber(), function (data) {
         $.each(data, function (index, course_obj) {
             var course = course_obj["course"];
+            
             //array of all areas and skills
             var all = course["skills"].split(",").concat(course["areas"].split(","));
+            all = $.unique(all);
+            
             //base string of full icon HTML
             var iconstring = '';
-            all = $.unique(all);
+
             //compose full icon HTML
             $.each(all, function (index, value) {
                 if (value != "") {
-                    console.log(all);
                     iconstring = iconstring + '<img class="icon" src="' + courseChoose(value)[0] + '">';
                 }
             });
+            
             //primary skill
-            var skill1 = course["skills"].split(",").first();
+            var skill1 = all.first();
             if (skill1 === '') {
-                skill1 = course["areas"].split(",").first();
+                skill1 = all[1];
             };
             
             //Mustache data
@@ -121,6 +130,8 @@ function load_courses() {
             }
             $newItems = $newItems.add(output);
         })
+        
+        $('.wheel').addClass('hide');
         
         //adjust isotope
         $container.isotope('insert', $newItems);
@@ -180,7 +191,7 @@ function courseChoose(category) {
         icon = ['images/icons/math.png', '#ebf2df'];
         break;
     default:
-        icon = ['images/socs.png'];
+        icon = ['images/icons/socs.png', '#a8dac9'];
     }
 
     return icon;
