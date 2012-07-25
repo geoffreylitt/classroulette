@@ -1,3 +1,5 @@
+var busy;
+
  $(document).ready(function() {
   var $container = $('#container');
 
@@ -13,7 +15,7 @@
       columnWidth : 1
     },
     getSortData: {
-      number: function($box){
+      number : function($box){
         return parseInt($box.attr('id').split('-')[1]);
       }
     },
@@ -48,7 +50,18 @@
     if (!$(this).hasClass('large')){
       $('.large').removeClass('large');
       $(this).addClass('large');
-      $container.isotope('reLayout');
+      var boxNumber= parseInt($(this).attr('id').split('-')[1]);
+      if (rowNumber() > 1 && (boxNumber > (courseNumber() - columnNumber()) + 2)){ //if in last row of >1 rows
+        console.log('---Doing a swap---');
+        console.log(boxNumber + ' to temp');
+        $(this).attr('id', 'temp');
+        console.log((boxNumber + '-' + columnNumber() + '=' + (boxNumber - columnNumber()) + ' to ' + boxNumber));
+        $('#box-' + (boxNumber - columnNumber())).attr('id', 'box-' + boxNumber);
+        console.log(boxNumber + ' to ' + boxNumber + '-' + columnNumber() + '=' + (boxNumber - columnNumber()));
+        $(this).attr('id', 'box-' + (boxNumber - columnNumber()));
+      }
+      $('#container').isotope('updateSortData', $('.box'));
+      $('#container').isotope({sortBy : 'number'});
     }
   });
 
@@ -75,6 +88,12 @@ String.prototype.truncate =
       };
 
 function load_courses(){
+  if (busy){
+    return false;
+  }
+
+  busy = true;
+
   var template;
   var $container = $('#container');
   var $newItems = $('');
@@ -171,6 +190,8 @@ function load_courses(){
 
     $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
+    busy = false;
+
   });
 
 }
@@ -239,8 +260,14 @@ function hideAbout(){
 
 function courseNumber(){
   $container = $("#container");
-  var row_number = Math.floor(($container.width() - 15)/183);
-  var number_of_rows = Math.floor(($(window).height() - 65)/183);
-  var number = row_number * number_of_rows - 3;
+  var number = rowNumber()* columnNumber()- 3;
   return number;
+}
+
+function columnNumber(){
+  return Math.floor(($container.width() - 15)/183);
+}
+
+function rowNumber(){
+  return Math.floor(($(window).height() - 65)/183);
 }
