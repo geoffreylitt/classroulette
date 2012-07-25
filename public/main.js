@@ -174,10 +174,10 @@ function courseChoose(category) {
         icon = ['images/icons/hums.png', '#a191c2'];
         break;
     case 'Sc':
-        icon = ['images/sci.png', '#cedf7f'];
+        icon = ['images/icons/sci.png', '#cedf7f'];
         break;
     case 'QR':
-        icon = ['images/math.png', '#ebf2df'];
+        icon = ['images/icons/math.png', '#ebf2df'];
         break;
     default:
         icon = ['images/socs.png'];
