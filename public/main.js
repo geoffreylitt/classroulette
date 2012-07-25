@@ -16,7 +16,7 @@ var busy;
     },
     getSortData: {
       number : function($box){
-        return parseInt($box.attr('id').split('-')[1]);
+        return boxNumber($box);
       }
     },
     sortBy: 'number',
@@ -47,11 +47,7 @@ var busy;
   $('a.logo').css('margin-right', 0);
 
   $container.delegate( '.box', 'click', function(){
-    if (!$(this).hasClass('large')){
-      $('.large').removeClass('large');
-      $(this).addClass('large');
-      $('#container').isotope({sortBy : 'number'});
-    }
+    expandBox($(this));
   });
 
   $(window).smartresize(function(){
@@ -144,7 +140,7 @@ function load_courses(){
         reading_period: course["reading_period"] ? 'reading_period' : '',
         permission_required: course["permission_required"] ? "permission_required" : '',
         ybb_id: course["ybb_id"],
-        box_index: index
+        box_index: index + 1
       }
 
       var output = Mustache.render(course_template, course_data);
@@ -249,7 +245,7 @@ function hideAbout(){
 
 function courseNumber(){
   $container = $("#container");
-  var number = rowNumber()* columnNumber()- 3;
+  var number = rowNumber()* columnNumber() - 3;
   return number;
 }
 
@@ -260,3 +256,135 @@ function columnNumber(){
 function rowNumber(){
   return Math.floor(($(window).height() - 65)/183);
 }
+
+function boxNumber($box){
+  return parseInt($box.attr('id').split('-')[1]);
+}
+
+function realBoxNumber($box){ //if there was no large, what number on the grid is this box?
+  var thisNumber= boxNumber($box);
+  var largeNumber = boxNumber($('.large'));
+  var result;
+
+  if (largeNumber < thisNumber){ //if large is before this box
+    if (largeNumber < (thisNumber - columnNumber() + 2)){ //if not on this row
+      result = thisNumber + 3;
+    }
+    else{ //if on this row
+      result = thisNumber + 1;
+    }
+  }
+  else{
+    result = thisNumber;
+  }
+  return result;
+}
+
+function saneBoxNumber($box){ //compensates for Isotope's weird sorting, what normal number should this box have
+  var largeNumber = boxNumber($(".large"));
+  var largeRow = realRow($(".large"));
+  var largeColumn = (largeNumber - 1) % columnNumber(); //zero-indexed
+  var thisRow = realRow($box);
+  var thisColumn = (realBoxNumber($box) - 1) & columnNumber();
+  var result = boxNumber($box);
+
+  if (largeRow < (thisRow - 1)){ //large box is above the row above this box's row
+    var realNumber = boxNumber($box) + 3;
+    var mod = (realNumber + 1) % columnNumber();
+    if(mod == 0){//second to last in row (dragged along by large box above)
+      result = ((thisRow - 1) * columnNumber()) - 3 + largeColumn + 1;
+    }
+    else if (mod == 1){//last in row, also dragged along
+      result = ((thisRow - 1) * columnNumber()) - 3 + largeColumn + 2;
+    }
+    else if (largeColumn < thisColumn){ //large is to left of this, messed up a bit
+      result = result + 2;
+    }
+    //if large is to right, everything's fine
+  }
+
+  return result;
+}
+
+function realRow($box){
+  var realNumber = realBoxNumber($box);
+  return Math.floor((realNumber - 1)/columnNumber()) + 1;
+}
+
+function expandBox($box){
+  var thisNumber= saneBoxNumber($box);
+  var thisInsaneNumber = boxNumber($box);
+  var largeNumber = boxNumber($(".large"));
+  var largeRow = realRow($(".large"));
+  var largeColumn = (largeNumber - 1) % columnNumber(); //zero-indexed
+  var thisRow = realRow($box);
+  var realNumber = realBoxNumber($box);
+  var swapNumber = thisNumber; //number of the box to swap with
+  var swapped = false;
+  console.log('-----Expanding ', thisNumber, '-----');
+
+  if (!$box.hasClass('large')){
+
+    //for boxes in last row
+    if(thisRow == rowNumber()){
+      console.log("in last row");
+      thisRow = thisRow - 1;
+      swapped = true;
+      if(largeNumber < thisNumber - columnNumber() + 2){ //large box is before the swap point
+        console.log("large box before swap point");
+        swapNumber = swapNumber - columnNumber() + 3;
+      }
+      else{
+        console.log("large box after swap point");
+        swapNumber = swapNumber - columnNumber() + 1;
+      }
+
+    }
+
+    //for boxes in rightmost column
+    if(realNumber % columnNumber() == 0){
+      console.log("in last column");
+      swapped = true;
+      if(largeNumber > thisNumber){ //large box is after this box
+        console.log("large box is after this box");
+        swapNumber = swapNumber - 1;
+      }
+      else if (largeRow < thisRow){ //large box is above this row
+        console.log("large box above this row");
+        if (largeColumn == 0){
+          swapNumber = (thisRow * columnNumber());
+        }
+        else if (largeColumn == 1){
+          swapNumber = (thisRow * columnNumber() - 1)
+        }
+        swapNumber = swapNumber + 2;
+      }
+      //no swap needed if in this row
+    }
+
+    if (swapped){
+      $box.attr('id', 'temp');
+      $('#box-' + swapNumber).attr('id', 'box-' + thisInsaneNumber);
+      $box.attr('id', 'box-' + swapNumber);
+      $box.attr('data-original', thisInsaneNumber);
+
+      console.log('swapped', thisInsaneNumber, 'for', swapNumber);
+
+      $('#box-' + largeNumber).removeClass('large');
+      $box.addClass('large');
+
+      $('#container').isotope( 'updateSortData', $('.box'));
+      $('#container').isotope({sortBy : 'number'});
+    }
+    else {
+      $('#box-' + largeNumber).removeClass('large');
+      $box.addClass('large');
+      $('#container').isotope('reLayout');
+    }
+    //swap them!
+
+
+
+  }
+}
+
