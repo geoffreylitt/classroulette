@@ -50,17 +50,6 @@ var busy;
     if (!$(this).hasClass('large')){
       $('.large').removeClass('large');
       $(this).addClass('large');
-      var boxNumber= parseInt($(this).attr('id').split('-')[1]);
-      if (rowNumber() > 1 && (boxNumber > (courseNumber() - columnNumber()) + 2)){ //if in last row of >1 rows
-        console.log('---Doing a swap---');
-        console.log(boxNumber + ' to temp');
-        $(this).attr('id', 'temp');
-        console.log((boxNumber + '-' + columnNumber() + '=' + (boxNumber - columnNumber()) + ' to ' + boxNumber));
-        $('#box-' + (boxNumber - columnNumber())).attr('id', 'box-' + boxNumber);
-        console.log(boxNumber + ' to ' + boxNumber + '-' + columnNumber() + '=' + (boxNumber - columnNumber()));
-        $(this).attr('id', 'box-' + (boxNumber - columnNumber()));
-      }
-      $('#container').isotope('updateSortData', $('.box'));
       $('#container').isotope({sortBy : 'number'});
     }
   });
