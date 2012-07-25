@@ -1,0 +1,16 @@
+<script id="course_template" type="text/html">
+  <div class="box" id='box-{{box_index}}' data-color-primary='{{color1}}' data-color-secondary='{{color2}}'>
+    <div class="left">
+    <h5 class='number' style="color: {{color1}};">{{number}}</h5>
+    <div title='Permission of the instructor required' class='{{permission_required}}'></div>
+    <h3 class='name'>{{name}}</h3>
+    {{{icon}}}
+    </div>
+    <div class="right">
+    <h5 class='professors' style="color: {{color1}};">{{professors}} | {{hours}} | {{skillsall}}</h5>
+    <p>{{{desc}}}</p>
+    <div class="links" style="background-color: {{color1}};"><a class="ybb" href="http://yalebluebook.com/details/{{ybb_id}}" data-ybb-id='{{ybb_id}}'>Yale Bluebook</a></div>
+    <div class="links" style="background-color: {{color1}};"><a class="oci" href="http://students.yale.edu/oci/resultDetail.jsp?course={{oci_id}}&term=201203" data-oci-id='{{oci_id}}'>Yale OCI</a></div>
+    </div>
+  </div>
+</script>
