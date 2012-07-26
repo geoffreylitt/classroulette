@@ -205,7 +205,7 @@ a.label:hover, a.badge:hover {
 .topbar {
     height: 100px;
     margin: auto;
-    width: 460px;
+    width: 560px;
     transition: all 0.3s !important;
     -moz-transition: all 0.3s !important;
     -webkit-transition: all 0.3s !important;
@@ -220,14 +220,14 @@ a.label:hover, a.badge:hover {
 }
 .topbar img {
     float: left;
-    margin: 20px 30px;
+    margin: 21px 30px;
     padding: 8px;
 }
 
 /* Container Styles */
 
 #container {
-    width: 1250;
+    width: 1200px;
     margin: auto;
     margin-top: -260px;
 }

@@ -94,7 +94,7 @@ function load_courses() {
             //compose full icon HTML
             $.each(all, function (index, value) {
                 if (value != "") {
-                    iconstring = iconstring + '<img class="icon" src="' + courseChoose(value)[0] + '">';
+                    iconstring = iconstring + '<a href="#" class="tool" rel="tooltip" title="'+courseChoose(value)[2]+'"><img class="icon" src="' + courseChoose(value)[0] + '"></a>';
                 }
             });
             
@@ -148,6 +148,8 @@ function load_courses() {
             return false;
         });
         
+        $('.box p').dotdotdot();
+        
         
         //TODO: add tooltips
 
@@ -161,37 +163,37 @@ function courseChoose(category) {
     var icon;
     switch (category) {
     case 'WR':
-        icon = ['images/icons/writing.png', '#f9847a'];
+        icon = ['images/icons/writing.png', '#f9847a', 'Writing'];
         break;
     case 'L1':
-        icon = ['images/icons/lang.png', '#fbcd5e'];
+        icon = ['images/icons/lang.png', '#fbcd5e', 'Level 1'];
         break;
     case 'L2':
-        icon = ['images/icons/lang.png', '#fbcd5e'];
+        icon = ['images/icons/lang.png', '#fbcd5e', 'Level 2'];
         break;
     case 'L3':
-        icon = ['images/icons/lang.png', '#fbcd5e'];
+        icon = ['images/icons/lang.png', '#fbcd5e', 'Level 3'];
         break;
     case 'L4':
-        icon = ['images/icons/lang.png', '#fbcd5e'];
+        icon = ['images/icons/lang.png', '#fbcd5e', 'Level 4'];
         break;
     case 'L5':
-        icon = ['images/icons/lang.png', '#fbcd5e'];
+        icon = ['images/icons/lang.png', '#fbcd5e', 'Level 5'];
         break;
     case 'So':
-        icon = ['images/icons/socs.png', '#a8dac9'];
+        icon = ['images/icons/socs.png', '#a8dac9', 'Social Science'];
         break;
     case 'Hu':
-        icon = ['images/icons/hums.png', '#a191c2'];
+        icon = ['images/icons/hums.png', '#a191c2', 'Humanities'];
         break;
     case 'Sc':
-        icon = ['images/icons/sci.png', '#cedf7f'];
+        icon = ['images/icons/sci.png', '#cedf7f', 'Science'];
         break;
     case 'QR':
-        icon = ['images/icons/math.png', '#ebf2df'];
+        icon = ['images/icons/math.png', '#ebf2df', 'Quantitative Reasoning'];
         break;
     default:
-        icon = ['images/icons/socs.png', '#a8dac9'];
+        icon = ['images/icons/socs.png', '#a8dac9', 'Social Science'];
     }
 
     return icon;
