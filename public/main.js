@@ -72,7 +72,7 @@ function load_courses() {
     var $newItems = $('');
     var $oldItems = $('.box');
 
-    $container.isotope('remove', $oldItems);
+
 
 
     $.get('template.html', function (templates) {
@@ -130,10 +130,13 @@ function load_courses() {
             $newItems = $newItems.add(output);
         })
         
+        $container.isotope('remove', $oldItems);
+        $container.isotope('insert', $newItems);
+        
         $('#status').html('Press the <span class="label label-info">Spacebar</span> for more');
         
         //adjust isotope
-        $container.isotope('insert', $newItems);
+        
 
 
         //link navigation
