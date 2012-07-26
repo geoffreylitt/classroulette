@@ -217,6 +217,10 @@ a.label:hover, a.badge:hover {
 .topbar h2 {
     float: left;
     margin: 20px 5px;
+        transition: all 0.3s !important;
+    -moz-transition: all 0.3s !important;
+    -webkit-transition: all 0.3s !important;
+    -o-transition: all 0.3s !important;
 }
 .topbar img {
     float: left;

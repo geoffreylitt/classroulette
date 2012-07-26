@@ -64,8 +64,7 @@ String.prototype.truncate = function (n, useWordBoundary) {
 function load_courses() {
 
     //start loading animation
-    $('.wheel').addClass('wheel2');
-    $('.wheel').removeClass('hide');
+    $('#status').html('Loading...');
     
     //setup template variables
     var template;
@@ -131,7 +130,7 @@ function load_courses() {
             $newItems = $newItems.add(output);
         })
         
-        $('.wheel').addClass('hide');
+        $('#status').html('Press the <span class="label label-info">Spacebar</span> for more');
         
         //adjust isotope
         $container.isotope('insert', $newItems);
