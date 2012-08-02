@@ -36,12 +36,11 @@ var numberOfColumns;
     return false;
   });
 
-  $('body').keydown(function(e){
-   if(e.keyCode == 32){
+  $(document).keydown(function(e){
+   if(e.which == 32){
       //pressed space
       load_courses();
       _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', '', numberOfCourses()]);
-      return false;
    }
   });
 
