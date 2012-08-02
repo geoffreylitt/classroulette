@@ -95,12 +95,12 @@ function load_courses(){
 
   if($('#second_message').is(':visible')){
     $('#second_message').hide();
-    $('#final_message').show();
+    setTimeout(function(){$('#final_message').show(500);}, 1500);
   }
 
   if($('#welcome_message').is(':visible')){
     $('#welcome_message').hide();
-    $('#second_message').show();
+    setTimeout(function(){$('#second_message').show(500);}, 1500);
   }
 
   $container.isotope('remove', $oldItems);
