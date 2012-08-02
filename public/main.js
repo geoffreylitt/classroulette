@@ -278,7 +278,6 @@ function realBoxNumber($box){
 
   if(largeNumber < thisNumber){
     if(largeNumber <= (fixedNumber - 2*numberOfColumns)){ //below the 2 rows occupied by large box
-      console.log("Below the two rows");
       offsetFromLargeColumn = (fixedNumber + 2) % numberOfColumns;
       if(offsetFromLargeColumn <= 1){ //below the 2 columns occupied by large box, and therefore screwed up
         firstInRow = Math.floor(fixedNumber / numberOfColumns) * numberOfColumns;
@@ -291,15 +290,12 @@ function realBoxNumber($box){
       else result = fixedNumber;
     }
     else if(thisNumber < largeNumber + numberOfColumns - 1) {
-      console.log("in the top row, or bottom row left of large");
       result = thisNumber + 1;
     }
     else if(Math.floor((thisNumber + 1) / numberOfColumns) == (Math.floor(largeNumber / numberOfColumns) + 1)){
-      console.log("in the bottom row right of large");
       result = fixedNumber;
     }
     else{ //should be impossible
-      console.log("WTF");
       result = "WTF";
     }
   }
@@ -322,18 +318,13 @@ function expandBox($box, init){
   if (!$box.hasClass('large')){
 
     if(!init){
-      console.log(swapTarget);
       if(swapTarget >= (numberOfRows - 1) * numberOfColumns){ //in last row
-        console.log("in last row");
         swapTarget = swapTarget - numberOfColumns;
       }
 
       if((swapTarget + 1) % numberOfColumns == 0){ //in rightmost column
-        console.log("in last column");
         swapTarget = swapTarget - 1;
       }
-
-      console.log("swapping", thisNumber, swapTarget);
 
       if (swapTarget != thisNumber){
         $box.attr('id', 'temp');
