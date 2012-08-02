@@ -311,8 +311,14 @@ function expandBox($box, init){
   var thisRealNumber = init? 0 : realBoxNumber($box);
   var swapTarget = thisRealNumber;
   var largeNumber;
+  var $updatedItems;
+
+  $largeBox = $('.large');
 
   if (!$box.hasClass('large')){
+
+    $box.addClass('large');
+    $largeBox.removeClass('large');
 
     if(!init){
       if(swapTarget >= (numberOfRows - 1) * numberOfColumns){ //in last row
@@ -328,12 +334,10 @@ function expandBox($box, init){
         $("#box-" + swapTarget).attr('id', "box-" + thisNumber);
         $box.attr('id', "box-" + swapTarget);
       }
-
-      $('.large').removeClass('large');
     }
-    $box.addClass('large');
 
-    $('#container').isotope( 'updateSortData', $('.box'));
+    $updatedItems = $box.add($("#box-" + thisNumber));
+    $('#container').isotope('updateSortData', $updatedItems);
     $('#container').isotope({sortBy : 'number'});
 
   }
