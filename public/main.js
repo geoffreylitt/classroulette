@@ -1,4 +1,6 @@
 var busy;
+var numberOfRows;
+var numberOfColumns;
 
  $(document).ready(function() {
   var $container = $('#container');
@@ -30,7 +32,7 @@ var busy;
 
   $('a.logo').click(function(){
     load_courses();
-    _gaq.push(['_trackEvent', 'Load courses', 'Logo', '', courseNumber()]);
+    _gaq.push(['_trackEvent', 'Load courses', 'Logo', '', numberOfCourses()]);
     return false;
   });
 
@@ -38,7 +40,7 @@ var busy;
    if(e.keyCode == 32){
       //pressed space
       load_courses();
-      _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', '', courseNumber()]);
+      _gaq.push(['_trackEvent', 'Load courses', 'Spacebar', '', numberOfCourses()]);
       return false;
    }
   });
@@ -47,7 +49,7 @@ var busy;
   $('a.logo').css('margin-right', 0);
 
   $container.delegate( '.box', 'click', function(){
-    expandBox($(this));
+    expandBox($(this), false);
   });
 
   $(window).smartresize(function(){
@@ -59,6 +61,10 @@ var busy;
     var container_width = body_width - (body_width % 188) + 15;
     $container.width(container_width);
     $container.isotope('reLayout');
+
+    numberOfRows = calculateNumberOfRows();
+    numberOfColumns = calculateNumberOfColumns();
+
   });
 
 
@@ -123,7 +129,10 @@ function load_courses(){
     course_template = $(templates).filter('#course_template').html();
   });
 
-  $.getJSON('/courses?n=' + courseNumber(), function(data) {
+  numberOfColumns = calculateNumberOfColumns();
+  numberOfRows = calculateNumberOfRows();
+
+  $.getJSON('/courses?n=' + numberOfCourses(), function(data) {
     $.each(data, function(index, course_obj) {
       var course = course_obj["course"];
       var course_data = {
@@ -140,43 +149,42 @@ function load_courses(){
         reading_period: course["reading_period"] ? 'reading_period' : '',
         permission_required: course["permission_required"] ? "permission_required" : '',
         ybb_id: course["ybb_id"],
-        box_index: index + 1
+        box_index: index
       }
 
       var output = Mustache.render(course_template, course_data);
-      if (index == 0){
-        output = $(output).addClass('large');
-      }
       $newItems = $newItems.add(output);
     })
 
     spinner.stop();
 
-    $container.isotope( 'insert', $newItems );
+    $container.isotope( 'insert', $newItems, function(){
 
-    $container.find('.box').hover(
-      function(){
-        $(this).css("background-color", $(this).data('color-secondary'));
-      },
-      function(){
-        $(this).css("background-color", $(this).data('color-primary'));
-      }
-    );
+      expandBox($("#box-0"), true);
 
-    $('a.oci').click(function(){
-      window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400');
-      return false;
+      $container.find('.box').hover(
+        function(){
+          $(this).css("background-color", $(this).data('color-secondary'));
+        },
+        function(){
+          $(this).css("background-color", $(this).data('color-primary'));
+        }
+      );
+
+      $('a.oci').click(function(){
+        window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400');
+        return false;
+      });
+
+      $('a.ybb').click(function(){
+        window.open("http://yalebluebook.com/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
+        return false;
+      });
+
+      $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
+
+      busy = false;
     });
-
-    $('a.ybb').click(function(){
-      window.open("http://yalebluebook.com/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
-      return false;
-    });
-
-    $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
-
-    busy = false;
-
   });
 
 }
@@ -243,17 +251,15 @@ function hideAbout(){
   return false;
 }
 
-function courseNumber(){
-  $container = $("#container");
-  var number = rowNumber()* columnNumber() - 3;
-  return number;
+function numberOfCourses(){
+  return numberOfRows * numberOfColumns - 3;
 }
 
-function columnNumber(){
-  return Math.floor(($container.width() - 15)/183);
+function calculateNumberOfColumns(){
+  return Math.floor(($('#container').width() - 15)/183);
 }
 
-function rowNumber(){
+function calculateNumberOfRows(){
   return Math.floor(($(window).height() - 65)/183);
 }
 
@@ -261,130 +267,86 @@ function boxNumber($box){
   return parseInt($box.attr('id').split('-')[1]);
 }
 
-function realBoxNumber($box){ //if there was no large, what number on the grid is this box?
-  var thisNumber= boxNumber($box);
+function realBoxNumber($box){
   var largeNumber = boxNumber($('.large'));
-  var result;
+  var largeColumn = largeNumber % numberOfColumns;
+  var thisNumber = boxNumber($box);
+  var fixedNumber = thisNumber + 3; //reports "correct" box number if box is below the 2 rows occupied by large
+  var thisFixedColumn = fixedNumber % numberOfColumns;
 
-  if (largeNumber < thisNumber){ //if large is before this box
-    if (largeNumber < (thisNumber - columnNumber() + 2)){ //if not on this row
-      result = thisNumber + 3;
+  var result, offsetFromLargeColumn, firstInRow, realOffsetInRow;
+
+  if(largeNumber < thisNumber){
+    if(largeNumber <= (fixedNumber - 2*numberOfColumns)){ //below the 2 rows occupied by large box
+      console.log("Below the two rows");
+      offsetFromLargeColumn = (fixedNumber + 2) % numberOfColumns;
+      if(offsetFromLargeColumn <= 1){ //below the 2 columns occupied by large box, and therefore screwed up
+        firstInRow = Math.floor(fixedNumber / numberOfColumns) * numberOfColumns;
+        realOffsetInRow = largeColumn + offsetFromLargeColumn;
+        result = firstInRow + realOffsetInRow;
+      }
+      else if(thisFixedColumn >= largeColumn){ //is not to the left of the large box, so got shifted by the 2 screwed up boxes
+        result = fixedNumber + 2;
+      }
+      else result = fixedNumber;
     }
-    else{ //if on this row
+    else if(thisNumber < largeNumber + numberOfColumns - 1) {
+      console.log("in the top row, or bottom row left of large");
       result = thisNumber + 1;
     }
+    else if(Math.floor((thisNumber + 1) / numberOfColumns) == (Math.floor(largeNumber / numberOfColumns) + 1)){
+      console.log("in the bottom row right of large");
+      result = fixedNumber;
+    }
+    else{ //should be impossible
+      console.log("WTF");
+      result = "WTF";
+    }
   }
-  else{
-    result = thisNumber;
-  }
-  return result;
-}
 
-function saneBoxNumber($box){ //compensates for Isotope's weird sorting, what normal number should this box have
-  var largeNumber = boxNumber($(".large"));
-  var largeRow = realRow($(".large"));
-  var largeColumn = (largeNumber - 1) % columnNumber(); //zero-indexed
-  var thisRow = realRow($box);
-  var thisColumn = (realBoxNumber($box) - 1) & columnNumber();
-  var result = boxNumber($box);
-
-  if (largeRow < (thisRow - 1)){ //large box is above the row above this box's row
-    var realNumber = boxNumber($box) + 3;
-    var mod = (realNumber + 1) % columnNumber();
-    if(mod == 0){//second to last in row (dragged along by large box above)
-      result = ((thisRow - 1) * columnNumber()) - 3 + largeColumn + 1;
-    }
-    else if (mod == 1){//last in row, also dragged along
-      result = ((thisRow - 1) * columnNumber()) - 3 + largeColumn + 2;
-    }
-    else if (largeColumn < thisColumn){ //large is to left of this, messed up a bit
-      result = result + 2;
-    }
-    //if large is to right, everything's fine
-  }
+  else result = thisNumber;
 
   return result;
 }
 
-function realRow($box){
-  var realNumber = realBoxNumber($box);
-  return Math.floor((realNumber - 1)/columnNumber()) + 1;
-}
+function expandBox($box, init){
 
-function expandBox($box){
-  var thisNumber= saneBoxNumber($box);
-  var thisInsaneNumber = boxNumber($box);
-  var largeNumber = boxNumber($(".large"));
-  var largeRow = realRow($(".large"));
-  var largeColumn = (largeNumber - 1) % columnNumber(); //zero-indexed
-  var thisRow = realRow($box);
-  var realNumber = realBoxNumber($box);
-  var swapNumber = thisNumber; //number of the box to swap with
-  var swapped = false;
-  console.log('-----Expanding ', thisNumber, '-----');
+  var thisNumber = boxNumber($box);
+  var thisRealNumber = init? 0 : realBoxNumber($box);
+  var swapTarget = thisRealNumber;
+  var largeNumber;
+  if(!init){
+    largeNumber = boxNumber($('.large'));
+  }
 
   if (!$box.hasClass('large')){
 
-    //for boxes in last row
-    if(thisRow == rowNumber()){
-      console.log("in last row");
-      thisRow = thisRow - 1;
-      swapped = true;
-      if(largeNumber < thisNumber - columnNumber() + 2){ //large box is before the swap point
-        console.log("large box before swap point");
-        swapNumber = swapNumber - columnNumber() + 3;
-      }
-      else{
-        console.log("large box after swap point");
-        swapNumber = swapNumber - columnNumber() + 1;
+    if(!init){
+      console.log(swapTarget);
+      if(swapTarget >= (numberOfRows - 1) * numberOfColumns){ //in last row
+        console.log("in last row");
+        swapTarget = swapTarget - numberOfColumns;
       }
 
-    }
-
-    //for boxes in rightmost column
-    if(realNumber % columnNumber() == 0){
-      console.log("in last column");
-      swapped = true;
-      if(largeNumber > thisNumber){ //large box is after this box
-        console.log("large box is after this box");
-        swapNumber = swapNumber - 1;
+      if((swapTarget + 1) % numberOfColumns == 0){ //in rightmost column
+        console.log("in last column");
+        swapTarget = swapTarget - 1;
       }
-      else if (largeRow < thisRow){ //large box is above this row
-        console.log("large box above this row");
-        if (largeColumn == 0){
-          swapNumber = (thisRow * columnNumber());
-        }
-        else if (largeColumn == 1){
-          swapNumber = (thisRow * columnNumber() - 1)
-        }
-        swapNumber = swapNumber + 2;
+
+      console.log("swapping", thisNumber, swapTarget);
+
+      if (swapTarget != thisNumber){
+        $box.attr('id', 'temp');
+        $("#box-" + swapTarget).attr('id', "box-" + thisNumber);
+        $box.attr('id', "box-" + swapTarget);
       }
-      //no swap needed if in this row
-    }
-
-    if (swapped){
-      $box.attr('id', 'temp');
-      $('#box-' + swapNumber).attr('id', 'box-' + thisInsaneNumber);
-      $box.attr('id', 'box-' + swapNumber);
-      $box.attr('data-original', thisInsaneNumber);
-
-      console.log('swapped', thisInsaneNumber, 'for', swapNumber);
 
       $('#box-' + largeNumber).removeClass('large');
-      $box.addClass('large');
-
-      $('#container').isotope( 'updateSortData', $('.box'));
-      $('#container').isotope({sortBy : 'number'});
     }
-    else {
-      $('#box-' + largeNumber).removeClass('large');
-      $box.addClass('large');
-      $('#container').isotope('reLayout');
-    }
-    //swap them!
+    $box.addClass('large');
 
-
+    $('#container').isotope( 'updateSortData', $('.box'));
+    $('#container').isotope({sortBy : 'number'});
 
   }
 }
-
