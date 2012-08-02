@@ -311,9 +311,6 @@ function expandBox($box, init){
   var thisRealNumber = init? 0 : realBoxNumber($box);
   var swapTarget = thisRealNumber;
   var largeNumber;
-  if(!init){
-    largeNumber = boxNumber($('.large'));
-  }
 
   if (!$box.hasClass('large')){
 
@@ -332,7 +329,7 @@ function expandBox($box, init){
         $box.attr('id', "box-" + swapTarget);
       }
 
-      $('#box-' + largeNumber).removeClass('large');
+      $('.large').removeClass('large');
     }
     $box.addClass('large');
 
