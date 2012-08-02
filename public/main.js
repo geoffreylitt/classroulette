@@ -295,7 +295,8 @@ function realBoxNumber($box){
       result = fixedNumber;
     }
     else{ //should be impossible
-      result = "WTF";
+      result = fixedNumber;
+      console.log("impossible condition happened...");
     }
   }
 
