@@ -158,14 +158,23 @@ class Scrape
     log = Logger.new('scrape-log.txt')
     #authenticate with CAS
     agent = Mechanize.new
+    puts "Loading initial page..."
     page = agent.get('https://ybb.yale.edu')
     login_form = page.form
     login_form.username = cas_username
     login_form.password = cas_password
+    puts "Logging in with CAS..."
     agent.submit(login_form, login_form.buttons.first)
 
+    puts "Scraping courses...(check log file)"
     (first..last).each do |ybb_id|
-      json = agent.get("https://ybb.yale.edu/courses/#{ybb_id}.json")
+      log.info "Scraping YBB #{ybb_id}..."
+      begin
+        json = agent.get("https://ybb.yale.edu/courses/#{ybb_id}.json")
+      rescue
+        log.error "YBB #{ybb_id} not found."
+        next
+      end
       result = JSON.parse(json.body)
       oci_id = result['course']['oci_id']
 
