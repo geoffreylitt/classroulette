@@ -176,7 +176,7 @@ function load_courses(){
       });
 
       $('a.ybb').click(function(){
-        window.open("http://yalebluebook.com/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
+        window.open("https://ybb.yale.edu/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
         return false;
       });
 

@@ -7,7 +7,7 @@ require 'mechanize'
 class Scrape
 
   def self.scrape_range(first, last)
-    log = Logger.new('log.txt')
+    log = Logger.new('scrape-log.txt')
 
     (first..last).each do |course_id|
       unless Course.find_by_oci_id(course_id)
@@ -155,24 +155,28 @@ class Scrape
   end
 
   def self.scrape_ybb(first, last, cas_username, cas_password)
+    log = Logger.new('scrape-log.txt')
     #authenticate with CAS
     agent = Mechanize.new
-    page = agent.get('http://yalebluebook.com')
+    page = agent.get('https://ybb.yale.edu')
     login_form = page.form
     login_form.username = cas_username
     login_form.password = cas_password
     agent.submit(login_form, login_form.buttons.first)
 
     (first..last).each do |ybb_id|
-      json = agent.get("http://yalebluebook.com/courses/#{ybb_id}.json")
+      json = agent.get("https://ybb.yale.edu/courses/#{ybb_id}.json")
       result = JSON.parse(json.body)
       oci_id = result['course']['oci_id']
 
       course = Course.find_all_by_oci_id(oci_id).first
 
       if course
+        log.info "YBB #{ybb_id} => OCI #{oci_id}"
         course.ybb_id = ybb_id
         course.save!
+      else
+        log.info "YBB #{ybb_id} => No match"
       end
     end
   end
