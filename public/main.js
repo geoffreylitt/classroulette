@@ -176,7 +176,7 @@ function load_courses(){
       });
 
       $('a.ybb').click(function(){
-        window.open("https://ybb.yale.edu/details/" + $(this).data("ybb-id"), "_blank", 'width=800,height=800');
+        window.open("https://ybb.yale.edu/search/q?term=201203&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
         return false;
       });
 
