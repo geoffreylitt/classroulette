@@ -148,6 +148,7 @@ function load_courses(){
         reading_period: course["reading_period"] ? 'reading_period' : '',
         permission_required: course["permission_required"] ? "permission_required" : '',
         ybb_id: course["ybb_id"],
+        semester: course["semester"],
         box_index: index
       }
 
@@ -171,12 +172,12 @@ function load_courses(){
       );
 
       $('a.oci').click(function(){
-        window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=201203", "_blank", 'width=600,height=400');
+        window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=" + $(this).data("semester"), "_blank", 'width=600,height=400');
         return false;
       });
 
       $('a.ybb').click(function(){
-        window.open("https://ybb.yale.edu/search/q?term=201203&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
+        window.open("https://ybb.yale.edu/search/q?term=" + $(this).data("semester") + "&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
         return false;
       });
 
