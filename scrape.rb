@@ -138,6 +138,13 @@ class Scrape
           end
         end
 
+        #see if course is cancelled
+        if page.text.downcase.include? "cancelled"
+          cancelled = true
+        else
+          cancelled = false
+        end
+
       rescue
         log.error "Couldn't process #{course_id}"
         next
@@ -159,7 +166,8 @@ class Scrape
           :no_exam => no_exam,
           :reading_period => reading_period,
           :semester => semester_id,
-          :category => category
+          :category => category,
+          :cancelled => cancelled
         )
 
         log.info "Saved #{course_id} (#{department} #{number})"
