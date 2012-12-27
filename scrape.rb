@@ -18,195 +18,156 @@ class Scrape
     sci = {:name => 'sci', :departments => ['AMTH','APHY','ASTR','BENG','BIOL','CENG','CHEM','CPSC','E&EB','EENG','ENAS','EVST','G&G','MATH','MB&B','MCDB','MENG','OPRS','PHYS','SCIE','STAT']}
 
     (first..last).each do |course_id|
-      unless Course.find_by_oci_id(course_id)
-        begin
-          page = Nokogiri::HTML(open("http://students.yale.edu/oci/resultDetail.jsp?course=#{course_id}&term=#{semester_id}"))
-        rescue
-          log.error "Couldn't find #{course_id}"
-          next
-        end
-
-        begin
-          data = page.css('td:nth-child(1) tr:nth-child(1) .RowText').text.gsub(/\s+/, ' ').strip
-          department = data.split[0]
-          number = data.split[1]
-          name = page.css('b').text.strip
-          if name == ""
-            name = page.css('p')[0].text.strip
-          end
-          professors_array = Array.new
-          page.css('tr:nth-child(3) a').each do |p|
-            professors_array << p.text
-          end
-          professors = professors_array.join(',')
-
-          hours_array = Array.new
-          hours_raw = page.css('td:nth-child(1) tr:nth-child(4)').to_s
-          hours_split = hours_raw.split('<br>')
-          hours_split.each do |line|
-            hours_array << line.gsub(/<\/?[^>]*>/, "").strip
-          end
-          hours = hours_array.join(',')
-
-          has_final = true
-          permission_required = false
-          meets_during_rp = false
-          skills = []
-          areas = []
-          notices_array = []
-
-          page.css('td:nth-child(2) tr').each do |row|
-            row = row.text
-
-            if row.include? 'Skills'
-              if row.upcase.include? 'WR'
-                skills << 'WR'
-              end
-
-              if row.upcase.include? 'QR'
-                skills << 'QR'
-              end
-
-              if row.upcase.include? 'L1'
-                skills << 'L1'
-              end
-
-              if row.upcase.include? 'L2'
-                skills << 'L2'
-              end
-
-              if row.upcase.include? 'L3'
-                skills << 'L3'
-              end
-
-              if row.upcase.include? 'L4'
-                skills << 'L4'
-              end
-
-              if row.upcase.include? 'L5'
-                skills << 'L5'
-              end
-            elsif row.include? 'Areas'
-              if row.upcase.include? 'HU'
-                areas << 'Hu'
-              end
-
-              if row.upcase.include? 'SO'
-                areas << 'So'
-              end
-
-              if row.upcase.include? 'SC'
-                areas << 'Sc'
-              end
-            elsif !(row.include? 'Spring 2013')
-              notices_array << row.gsub(/\s+/, ' ').strip
-            end
-          end
-
-          if notices_array.include? 'Permission of instructor required'
-            permission_required = true
-          else
-            permission_required = false
-          end
-
-          if notices_array.include? 'No regular final examination'
-            no_exam = true
-          else
-            no_exam = false
-          end
-
-          if notices_array.include? "Meets during reading period"
-            reading_period = true
-          else
-            reading_period = false
-          end
-
-          skills_string = skills.join(',')
-          areas_string = areas.join(',')
-          notices = notices_array.join(',')
-
-          description_array = Array.new
-          page.css('table:nth-child(7) p').each do |p|
-            description_array << p.text
-          end
-          description = description_array.join("\n")
-
-          #set category
-          category = 'other' #default
-          [arts, lang, sosc, hums, sci].each do |category_hash|
-            if category_hash[:departments].include? department
-              category = category_hash[:name]
-            end
-          end
-          
-        rescue
-          log.error "Couldn't process #{course_id}"
-          next
-        end
-
-        begin
-          c = Course.find_or_create_by_oci_id(course_id,
-            :department => department,
-            :number => number.to_i,
-            :name => name,
-            :professors => professors,
-            :hours => hours,
-            :notices => notices,
-            :skills => skills_string,
-            :areas => areas_string,
-            :desc => description,
-            :permission_required => permission_required,
-            :no_exam => no_exam,
-            :reading_period => reading_period,
-            :semester => semester_id,
-            :category => category
-          )
-
-          log.info "Saved #{course_id} (#{department} #{number})"
-        rescue
-          log.error "Couldn't save #{course_id}"
-          next
-        end
-      end
-    end
-  end
-
-  def self.scrape_ybb(first, last, cas_username, cas_password)
-    log = Logger.new('scrape-log.txt')
-    #authenticate with CAS
-    agent = Mechanize.new
-    puts "Loading initial page..."
-    page = agent.get('https://ybb.yale.edu')
-    login_form = page.form
-    login_form.username = cas_username
-    login_form.password = cas_password
-    puts "Logging in with CAS..."
-    agent.submit(login_form, login_form.buttons.first)
-
-    puts "Scraping courses...(check log file)"
-    (first..last).each do |ybb_id|
-      log.info "Scraping YBB #{ybb_id}..."
       begin
-        json = agent.get("https://ybb.yale.edu/courses/#{ybb_id}.json")
+        page = Nokogiri::HTML(open("http://students.yale.edu/oci/resultDetail.jsp?course=#{course_id}&term=#{semester_id}"))
       rescue
-        log.error "YBB #{ybb_id} not found."
+        log.error "Couldn't find #{course_id}"
         next
       end
-      result = JSON.parse(json.body)
-      oci_id = result['course']['oci_id']
 
-      course = Course.find_all_by_oci_id(oci_id).first
+      begin
+        data = page.css('td:nth-child(1) tr:nth-child(1) .RowText').text.gsub(/\s+/, ' ').strip
+        department = data.split[0]
+        number = data.split[1]
+        name = page.css('b').text.strip
+        if name == ""
+          name = page.css('p')[0].text.strip
+        end
+        professors_array = Array.new
+        page.css('tr:nth-child(3) a').each do |p|
+          professors_array << p.text
+        end
+        professors = professors_array.join(',')
 
-      if course
-        log.info "YBB #{ybb_id} => OCI #{oci_id}"
-        course.ybb_id = ybb_id
-        course.save!
-      else
-        log.info "YBB #{ybb_id} => No match"
+        hours_array = Array.new
+        hours_raw = page.css('td:nth-child(1) tr:nth-child(4)').to_s
+        hours_split = hours_raw.split('<br>')
+        hours_split.each do |line|
+          hours_array << line.gsub(/<\/?[^>]*>/, "").strip
+        end
+        hours = hours_array.join(',')
+
+        has_final = true
+        permission_required = false
+        meets_during_rp = false
+        skills = []
+        areas = []
+        notices_array = []
+
+        page.css('td:nth-child(2) tr').each do |row|
+          row = row.text
+
+          if row.include? 'Skills'
+            if row.upcase.include? 'WR'
+              skills << 'WR'
+            end
+
+            if row.upcase.include? 'QR'
+              skills << 'QR'
+            end
+
+            if row.upcase.include? 'L1'
+              skills << 'L1'
+            end
+
+            if row.upcase.include? 'L2'
+              skills << 'L2'
+            end
+
+            if row.upcase.include? 'L3'
+              skills << 'L3'
+            end
+
+            if row.upcase.include? 'L4'
+              skills << 'L4'
+            end
+
+            if row.upcase.include? 'L5'
+              skills << 'L5'
+            end
+          elsif row.include? 'Areas'
+            if row.upcase.include? 'HU'
+              areas << 'Hu'
+            end
+
+            if row.upcase.include? 'SO'
+              areas << 'So'
+            end
+
+            if row.upcase.include? 'SC'
+              areas << 'Sc'
+            end
+          elsif !(row.include? 'Spring 2013')
+            notices_array << row.gsub(/\s+/, ' ').strip
+          end
+        end
+
+        if notices_array.include? 'Permission of instructor required'
+          permission_required = true
+        else
+          permission_required = false
+        end
+
+        if notices_array.include? 'No regular final examination'
+          no_exam = true
+        else
+          no_exam = false
+        end
+
+        if notices_array.include? "Meets during reading period"
+          reading_period = true
+        else
+          reading_period = false
+        end
+
+        skills_string = skills.join(',')
+        areas_string = areas.join(',')
+        notices = notices_array.join(',')
+
+        description_array = Array.new
+        page.css('table:nth-child(7) td').each do |td|
+          description_array << td.text.strip unless td.text.empty?
+        end
+        description = description_array.join("\n")
+
+        #set category
+        category = 'other' #default
+        [arts, lang, sosc, hums, sci].each do |category_hash|
+          if category_hash[:departments].include? department
+            category = category_hash[:name]
+          end
+        end
+
+      rescue
+        log.error "Couldn't process #{course_id}"
+        next
+      end
+
+      begin
+        c = Course.find_or_create_by_oci_id(course_id)
+        c.update_attributes(
+          :department => department,
+          :number => number.to_i,
+          :name => name,
+          :professors => professors,
+          :hours => hours,
+          :notices => notices,
+          :skills => skills_string,
+          :areas => areas_string,
+          :desc => description,
+          :permission_required => permission_required,
+          :no_exam => no_exam,
+          :reading_period => reading_period,
+          :semester => semester_id,
+          :category => category
+        )
+
+        log.info "Saved #{course_id} (#{department} #{number})"
+      rescue
+        log.error "Couldn't save #{course_id}"
+        next
       end
     end
   end
-
-
-
+  
 end
