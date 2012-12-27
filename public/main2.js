@@ -124,7 +124,7 @@ function load_courses(){
 
   var spinner = new Spinner(opts).spin(document.body);
 
-  $.get('templates.html', function(templates) {
+  $.get('template.html', function(templates) {
     course_template = $(templates).filter('#course_template').html();
   });
 
