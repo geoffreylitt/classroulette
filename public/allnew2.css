@@ -106,6 +106,11 @@ a.logo:active{
   line-height: 1.3em;
 }
 
+.de-emphasize{
+  font-size: 20px;
+  color: #a8a8a8;
+}
+
 #recommendation{
   width: 900px;
   font-size: 20px;
