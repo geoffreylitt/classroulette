@@ -29,7 +29,7 @@ class Scrape
         data = page.css('td:nth-child(1) tr:nth-child(1) .RowText').text.gsub(/\s+/, ' ').strip
         department = data.split[0]
         number = data.split[1]
-        name = page.css('b').text.strip
+        name = page.css('b').first.text.strip
         if name == ""
           name = page.css('p')[0].text.strip
         end
