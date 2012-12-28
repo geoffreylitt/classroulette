@@ -104,6 +104,7 @@ function load_courses(){
     if($('#recommendation').is(':visible')){
       $('#recommendation').hide();
     }
+    document.title = "Yale Classroulette"; //reset title
     setTimeout(function(){$('#second_message').show(500);}, 1500);
   }
 
