@@ -361,7 +361,7 @@ a.box_button{
   float: left;
   margin: 0;
   padding: 5px;
-  width: 175px;
+  width: 112px;
   height: 39px;
   background-color: #6185A3;
   color: #ffffff;
@@ -376,12 +376,12 @@ a.box_button{
 
 a.box_button.left{
   border-right: solid thin #294F6D;
-  width: 172px;
   -moz-border-radius-bottomleft: 20px;
   -webkit-border-bottom-left-radius: 20px;
 }
 
 a.box_button.right{
+  border-left: solid thin #294F6D;
   -moz-border-radius-bottomright: 20px;
   -webkit-border-bottom-right-radius: 20px;
 }
