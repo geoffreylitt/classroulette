@@ -1,9 +1,12 @@
 <div id='top-bar'>
   <a class='logo' href='#'></a>
 </div>
-<div id='container'></div>
+<div id='container' data-courseid=<%= @course.oci_id %>></div>
 <div id="welcome_message">
-  Classroulette helps you explore the Bluebook. (Now showing Spring 2013 courses!)<br><br>Press the <span class="spacebar">spacebar</span> or click the logo to start.
+  Classroulette helps you explore the Bluebook.<br> (Now showing Spring 2013 courses!)<br><br>Press the <span class="spacebar">spacebar</span> or click the logo to start.
+</div>
+<div id="recommendation">
+  You'll see the course your friend recommended, <span class="course_name"><%= @course.name %></span>, and much more.
 </div>
 <div id="second_message">When you're done looking at these classes, <br>press the spacebar or click the logo to play again.</div>
 <div id="final_message">Congrats, you're now an expert at Classroulette!</div>

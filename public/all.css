@@ -102,8 +102,22 @@ a.logo:active{
   color: #dddddd;
   font-family: 'PT Sans', sans serif;
   text-align: center;
-  margin: 200px auto 0 auto;
+  margin: 150px auto 0 auto;
   line-height: 1.3em;
+}
+
+#recommendation{
+  width: 900px;
+  font-size: 20px;
+  color: #a8a8a8;
+  font-family: 'PT Sans', sans serif;
+  text-align: center;
+  margin: 30px auto 0 auto;
+  line-height: 1.3em;
+}
+
+#recommendation .course_name{
+  color: #dddddd;
 }
 
 .spacebar{

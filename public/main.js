@@ -1,6 +1,7 @@
 var busy;
 var numberOfRows;
 var numberOfColumns;
+var firstQuery = true;
 
  $(document).ready(function() {
   var $container = $('#container');
@@ -100,6 +101,9 @@ function load_courses(){
 
   if($('#welcome_message').is(':visible')){
     $('#welcome_message').hide();
+    if($('#recommendation').is(':visible')){
+      $('#recommendation').hide();
+    }
     setTimeout(function(){$('#second_message').show(500);}, 1500);
   }
 
@@ -131,7 +135,13 @@ function load_courses(){
   numberOfColumns = calculateNumberOfColumns();
   numberOfRows = calculateNumberOfRows();
 
-  $.getJSON('/random?n=' + numberOfCourses(), function(data) {
+  queryString = '/random?';
+  if(firstQuery){
+    recommendation_id = $('#container').data('courseid')
+    queryString += ('first_id=' + recommendation_id + '&');
+  }
+  queryString += ('n=' + numberOfCourses());
+  $.getJSON(queryString, function(data) {
     $.each(data, function(index, course_obj) {
       var course = course_obj["course"];
       var course_data = {
@@ -184,6 +194,7 @@ function load_courses(){
       $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 
       busy = false;
+      firstQuery = false;
     });
   });
 

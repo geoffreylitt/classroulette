@@ -40,9 +40,25 @@ get '/' do
   erb :index
 end
 
+get '/recommended' do
+  if params[:course_id]
+    @course = Course.find_by_oci_id(params[:course_id])
+  else
+    redirect to('/')
+  end
+
+  erb :recommended
+end
+
 get '/random' do
-  number = [params[:n].to_i, 100].min
-  @courses = settings.course_array.sample(number)
+  @courses = Array.new
+  if params[:first_id]
+    @courses << Course.find_by_oci_id(params[:first_id])
+  end
+  number = [params[:n].to_i, 100].min - @courses.length
+  settings.course_array.sample(number).each do |el|
+    @courses << el
+  end
   content_type :json
   headers 'Cache-Control' => 'max-age=0, must-revalidate'
   @courses.to_json
