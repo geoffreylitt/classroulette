@@ -131,7 +131,7 @@ function load_courses(){
   numberOfColumns = calculateNumberOfColumns();
   numberOfRows = calculateNumberOfRows();
 
-  $.getJSON('/courses?n=' + numberOfCourses(), function(data) {
+  $.getJSON('/random?n=' + numberOfCourses(), function(data) {
     $.each(data, function(index, course_obj) {
       var course = course_obj["course"];
       var course_data = {

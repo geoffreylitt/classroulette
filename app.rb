@@ -33,16 +33,17 @@ end
 require './course'
 require './scrape'
 
+set :course_array, Course.where("number < 400 AND department != 'DRAM' AND cancelled = 'f'") #crude in-memory cache
 set :static, true
 
 get '/' do
   erb :index
 end
 
-get '/courses' do
+get '/random' do
   number = [params[:n].to_i, 100].min
-  @courses = Course.where("number < 400 AND department != 'DRAM' AND cancelled = 'f'").sample(number)
+  @courses = settings.course_array.sample(number)
   content_type :json
   headers 'Cache-Control' => 'max-age=0, must-revalidate'
-  @courses.to_json(:methods => :category)
+  @courses.to_json
 end
