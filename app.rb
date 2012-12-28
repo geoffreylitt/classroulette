@@ -52,8 +52,11 @@ end
 
 get '/random' do
   @courses = Array.new
-  number = [params[:n].to_i, 100].min
-  settings.course_array.sample(number).each do |el|
+  if params[:first_id]
+    @courses << Course.find_by_oci_id(params[:first_id])
+  end
+  number = [params[:n].to_i, 100].min - @courses.length
+  settings.course_array.sample(number).each do |el| #get random courses from the in-memory cache
     @courses << el
   end
   content_type :json

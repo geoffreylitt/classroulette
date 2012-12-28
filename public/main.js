@@ -136,8 +136,8 @@ function load_courses(){
   numberOfRows = calculateNumberOfRows();
 
   queryString = '/random?';
-  if(firstQuery){
-    recommendation_id = $('#container').data('courseid')
+  recommendation_id = $('#container').data('courseid')
+  if(firstQuery && typeof recommendation_id != 'undefined'){
     queryString += ('first_id=' + recommendation_id + '&');
   }
   queryString += ('n=' + numberOfCourses());
