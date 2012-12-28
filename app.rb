@@ -52,10 +52,7 @@ end
 
 get '/random' do
   @courses = Array.new
-  if params[:first_id]
-    @courses << Course.find_by_oci_id(params[:first_id])
-  end
-  number = [params[:n].to_i, 100].min - @courses.length
+  number = [params[:n].to_i, 100].min
   settings.course_array.sample(number).each do |el|
     @courses << el
   end
