@@ -7,7 +7,7 @@
     <meta property="og:type" content="website"/>
     <meta property="og:image" content="http://yaleclassroulette.com/images/classroulette.png"/>
     <% if @course %>
-      <meta property="og:title" content="<%= @course.department + " " + @course.number.to_s + " '" + @course.name + "'" %> - Yale Classroulette"/>
+      <meta property="og:title" content="<%= "#{@course.name} (#{@course.department} #{@course.number})" %> - Yale Classroulette"/>
       <meta property="og:description" content="<%= @course.desc %>"/>
       <meta property="og:url" content="http://yaleclassroulette.com/recommended?course_id=<%= @course.oci_id%>">
       <meta name="description" content="<%= @course.desc %>" />
