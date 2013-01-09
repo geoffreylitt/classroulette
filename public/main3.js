@@ -1,4 +1,4 @@
-var busy;
+var busy = false;
 var numberOfRows;
 var numberOfColumns;
 var firstQuery = true;
@@ -176,7 +176,9 @@ function load_courses(){
 
     spinner.stop();
 
-    $container.isotope( 'insert', $newItems, function(){
+    $container.isotope('insert', $newItems, function(){
+      //alert("in the callback!");
+      //this alert doesn't show up on firefox
 
       expandBox($("#box-0"), true);
 
@@ -305,7 +307,7 @@ function realBoxNumber($box){
 function expandBox($box, init){
 
   var thisNumber = boxNumber($box);
-  var thisRealNumber = init? 0 : realBoxNumber($box);
+  var thisRealNumber = init ? 0 : realBoxNumber($box);
   var swapTarget = thisRealNumber;
   var largeNumber;
   var $updatedItems;
