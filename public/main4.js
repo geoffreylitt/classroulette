@@ -67,12 +67,29 @@ var firstQuery = true;
 
   });
 
-  //override facebook share links to open in new window
-  $("body").delegate("a.fb", "click", function(){
-    window.open($(this).attr("href"), "", "width=655,height=430");
+  //override oci links to open in new window
+  $("body").delegate("a.oci", "click", function(){
+    $this = $(this);
+    _gaq.push(['_trackEvent', 'Course actions', 'OCI', $this.parents(".box").data("oci-id").toString()]);
+    window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $this.data("oci-id") + "&term=" + $this.data("semester"), "_blank", 'width=600,height=400');
     return false;
   });
 
+  //override ybb links to open in new window
+  $("body").delegate("a.ybb", "click", function(){
+    $this = $(this);
+    _gaq.push(['_trackEvent', 'Course actions', 'YBB', $this.parents(".box").data("oci-id").toString()]);
+    window.open("https://ybb.yale.edu/search/q?term=" + $this.data("semester") + "&number=" + $this.parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
+    return false;
+  });
+
+  //override facebook share links to open in new window
+  $("body").delegate("a.fb", "click", function(){
+    $this = $(this);
+    _gaq.push(['_trackEvent', 'Course actions', 'Facebook', $this.parents(".box").data("oci-id").toString()]);
+    window.open($this.attr("href"), "", "width=655,height=430");
+    return false;
+  });
 
 });
 
@@ -107,6 +124,7 @@ function load_courses(){
 
   if($('#welcome_message').is(':visible')){
     $('#welcome_message').hide();
+    $('#copyright').hide();
     if($('#recommendation').is(':visible')){
       $('#recommendation').hide();
     }
@@ -138,7 +156,7 @@ function load_courses(){
 
   var course_template;
 
-  $.get('template2.html', function(templates) {
+  $.get('template3.html', function(templates) {
     course_template = $(templates).filter('#course_template').html();
 
     numberOfColumns = calculateNumberOfColumns();
@@ -191,16 +209,6 @@ function load_courses(){
             $(this).css("background-color", $(this).data('color-primary'));
           }
         );
-
-        $('a.oci').click(function(){
-          window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=" + $(this).data("semester"), "_blank", 'width=600,height=400');
-          return false;
-        });
-
-        $('a.ybb').click(function(){
-          window.open("https://ybb.yale.edu/search/q?term=" + $(this).data("semester") + "&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
-          return false;
-        });
 
         $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
 

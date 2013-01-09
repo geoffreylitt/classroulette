@@ -47,7 +47,7 @@ get '/recommended' do
     redirect to('/')
   end
 
-  erb :recommended
+  erb :index
 end
 
 get '/random' do

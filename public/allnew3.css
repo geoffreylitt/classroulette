@@ -417,6 +417,14 @@ a.box_button:hover{
   display: block;
 }
 
+#copyright{
+  width: 100%;
+  position: absolute;
+  bottom: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+}
 
 
 /**** Isotope Filtering ****/
