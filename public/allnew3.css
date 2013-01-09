@@ -231,13 +231,17 @@ a#about-link{
   background-color: #366488;
   color: white;
 
+  -webkit-border-top-right-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+
   -moz-border-radius-topright: 20px;
   -moz-border-radius-bottomright: 20px;
   -moz-border-radius-bottomleft: 20px;
 
-  -webkit-border-top-right-radius: 20px;
-  -webkit-border-bottom-right-radius: 20px;
-  -webkit-border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 
   -webkit-transform: translateZ(0); /*may provide performance boost for animations*/
 
@@ -392,7 +396,7 @@ a.box_button.right{
 }
 
 a.box_button .target_service{
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
 }
 

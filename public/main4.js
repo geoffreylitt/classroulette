@@ -136,76 +136,79 @@ function load_courses(){
 
   var spinner = new Spinner(opts).spin(document.body);
 
+  var course_template;
+
   $.get('template2.html', function(templates) {
     course_template = $(templates).filter('#course_template').html();
-  });
 
-  numberOfColumns = calculateNumberOfColumns();
-  numberOfRows = calculateNumberOfRows();
+    numberOfColumns = calculateNumberOfColumns();
+    numberOfRows = calculateNumberOfRows();
 
-  queryString = '/random?';
-  recommendation_id = $('#container').data('courseid')
-  if(firstQuery && typeof recommendation_id != 'undefined'){
-    queryString += ('first_id=' + recommendation_id + '&');
-  }
-  queryString += ('n=' + numberOfCourses());
-  $.getJSON(queryString, function(data) {
-    $.each(data, function(index, course_obj) {
-      var course = course_obj["course"];
-      var course_data = {
-        oci_id: course["oci_id"],
-        number: course["department"] + " " + course["number"],
-        name: course["name"],
-        professors: course["professors"].split(",").join(", ").truncate(50, true),
-        desc: course["desc"].split("\n").join("<br><br>"),
-        skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" "),
-        hours: course["hours"].split(",").join(", "),
-        color1: courseColor(course["category"])[0],
-        color2: courseColor(course["category"])[1],
-        no_exam: course["no_exam"] ? 'no_exam' : '',
-        reading_period: course["reading_period"] ? 'reading_period' : '',
-        permission_required: course["permission_required"] ? "permission_required" : '',
-        ybb_id: course["ybb_id"],
-        semester: course["semester"],
-        box_index: index
-      }
-
-      var output = Mustache.render(course_template, course_data);
-      $newItems = $newItems.add(output);
-    })
-
-    spinner.stop();
-
-    $container.isotope('insert', $newItems, function(){
-      //alert("in the callback!");
-      //this alert doesn't show up on firefox
-
-      expandBox($("#box-0"), true);
-
-      $container.find('.box').hover(
-        function(){
-          $(this).css("background-color", $(this).data('color-secondary'));
-        },
-        function(){
-          $(this).css("background-color", $(this).data('color-primary'));
+    queryString = '/random?';
+    recommendation_id = $('#container').data('courseid')
+    if(firstQuery && typeof recommendation_id != 'undefined'){
+      queryString += ('first_id=' + recommendation_id + '&');
+    }
+    queryString += ('n=' + numberOfCourses());
+    $.getJSON(queryString, function(data) {
+      $.each(data, function(index, course_obj) {
+        var course = course_obj["course"];
+        var course_data = {
+          oci_id: course["oci_id"],
+          number: course["department"] + " " + course["number"],
+          name: course["name"],
+          professors: course["professors"].split(",").join(", ").truncate(50, true),
+          desc: course["desc"].split("\n").join("<br><br>"),
+          skills: course["skills"].split(",").join(" ") + " " + course["areas"].split(",").join(" "),
+          hours: course["hours"].split(",").join(", "),
+          color1: courseColor(course["category"])[0],
+          color2: courseColor(course["category"])[1],
+          no_exam: course["no_exam"] ? 'no_exam' : '',
+          reading_period: course["reading_period"] ? 'reading_period' : '',
+          permission_required: course["permission_required"] ? "permission_required" : '',
+          ybb_id: course["ybb_id"],
+          semester: course["semester"],
+          box_index: index
         }
-      );
 
-      $('a.oci').click(function(){
-        window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=" + $(this).data("semester"), "_blank", 'width=600,height=400');
-        return false;
+        var output = Mustache.render(course_template, course_data);
+        $newItems = $newItems.add(output);
+      })
+
+      spinner.stop();
+
+      $container.isotope('insert', $newItems, function(){
+        //alert("in the callback!");
+        //this alert doesn't show up on firefox
+
+        expandBox($("#box-0"), true);
+
+        $container.find('.box').hover(
+          function(){
+            $(this).css("background-color", $(this).data('color-secondary'));
+          },
+          function(){
+            $(this).css("background-color", $(this).data('color-primary'));
+          }
+        );
+
+        $('a.oci').click(function(){
+          window.open("http://students.yale.edu/oci/resultDetail.jsp?course=" + $(this).data("oci-id") + "&term=" + $(this).data("semester"), "_blank", 'width=600,height=400');
+          return false;
+        });
+
+        $('a.ybb').click(function(){
+          window.open("https://ybb.yale.edu/search/q?term=" + $(this).data("semester") + "&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
+          return false;
+        });
+
+        $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
+
+        busy = false;
+        firstQuery = false;
       });
-
-      $('a.ybb').click(function(){
-        window.open("https://ybb.yale.edu/search/q?term=" + $(this).data("semester") + "&number=" + $(this).parents(".box").find("h2.number").text(), "_blank", 'width=1100,height=800');
-        return false;
-      });
-
-      $(".no_exam, .reading_period, .permission_required").tipTip({delay: 200});
-
-      busy = false;
-      firstQuery = false;
     });
+
   });
 
 }
