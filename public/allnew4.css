@@ -248,7 +248,7 @@ a#about-link{
   -moz-border-radius-bottomright: 20px;
   -moz-border-radius-bottomleft: 20px;
 
-  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
 
@@ -264,6 +264,7 @@ a#about-link{
 
   -moz-border-radius-topright: 20px;
   -webkit-border-top-right-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .box_content{
@@ -276,6 +277,9 @@ a#about-link{
 
   -webkit-border-bottom-left-radius: 20px;
   -webkit-border-bottom-right-radius: 20px;
+
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .large{
@@ -487,6 +491,7 @@ div#itoggle{
   padding:20px 20px 0;
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
+  border-radius: 10px;
   color:#333;
   }
 div#itoggle h3{
