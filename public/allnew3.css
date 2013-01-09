@@ -125,6 +125,15 @@ a.logo:active{
   color: #dddddd;
 }
 
+#copyright{
+  width: 100%;
+  position: absolute;
+  bottom: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+}
+
 .spacebar{
   border: solid thin #dddddd;
   padding: 5px 30px;
@@ -415,15 +424,6 @@ a.box_button:hover{
 
 .large .course_details{
   display: block;
-}
-
-#copyright{
-  width: 100%;
-  position: absolute;
-  bottom: 16px;
-  text-align: center;
-  font-size: 18px;
-  color: #fff;
 }
 
 

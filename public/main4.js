@@ -5,6 +5,8 @@ var firstQuery = true;
 
  $(document).ready(function() {
   var $container = $('#container');
+  numberOfRows = calculateNumberOfRows();
+  numberOfColumns = calculateNumberOfColumns();
 
   var body_width = $('body').width();
   body_width = body_width - 15;
