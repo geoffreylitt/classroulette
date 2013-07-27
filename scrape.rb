@@ -4,6 +4,10 @@ require 'logger'
 require 'open-uri'
 require 'mechanize'
 
+# The Yale OCI site has an INCREDIBLY ugly and outdated HTML structure,
+# based on tables and utterly non-semantic. That's why this scraper is
+# so convoluted and fragile. It has to be updated every semester.
+
 class Scrape
 
   def self.scrape_range(first, last, semester_id)
@@ -26,21 +30,27 @@ class Scrape
       end
 
       begin
-        data = page.css('td:nth-child(1) tr:nth-child(1) .RowText').text.gsub(/\s+/, ' ').strip
+        metadata_table = page.css('table')[1]
+        left_column = metadata_table.css('table')[0]
+        right_column = metadata_table.css('table')[1]
+
+        left_column_rows = left_column.css('tr')
+        right_column_rows = right_column.css('tr')
+
+        data = left_column_rows[0].css('td.RowText').text.gsub(/\s+/, ' ').strip
         department = data.split[0]
         number = data.split[1]
-        name = page.css('b').first.text.strip
-        if name == ""
-          name = page.css('p')[0].text.strip
-        end
+
+        name = left_column_rows[1].text.gsub(/\s+/, ' ').strip
+
         professors_array = Array.new
-        page.css('tr:nth-child(3) a').each do |p|
+        left_column_rows[2].css('a').each do |p|
           professors_array << p.text
         end
         professors = professors_array.join(',')
 
         hours_array = Array.new
-        hours_raw = page.css('td:nth-child(1) tr:nth-child(4)').to_s
+        hours_raw = left_column_rows[3].to_s
         hours_split = hours_raw.split('<br>')
         hours_split.each do |line|
           hours_array << line.gsub(/<\/?[^>]*>/, "").strip
@@ -54,7 +64,7 @@ class Scrape
         areas = []
         notices_array = []
 
-        page.css('td:nth-child(2) tr').each do |row|
+        right_column_rows.each do |row|
           row = row.text
 
           if row.include? 'Skills'
@@ -125,8 +135,8 @@ class Scrape
         notices = notices_array.join(',')
 
         description_array = Array.new
-        page.css('table:nth-child(7) td').each do |td|
-          description_array << td.text.strip unless td.text.empty?
+        page.css('table')[4].css('td').each do |td|
+          description_array << td.text.strip unless td.text.gsub(/\s+/, ' ').strip.empty?
         end
         description = description_array.join("\n")
 
@@ -177,5 +187,5 @@ class Scrape
       end
     end
   end
-  
+
 end
